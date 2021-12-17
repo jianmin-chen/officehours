@@ -1,5 +1,6 @@
 /__pycache__
 /env
 /flask_session
+/routes/__pycache__
 database.db
 info.txt

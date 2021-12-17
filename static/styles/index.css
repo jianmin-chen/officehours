@@ -1,83 +1,86 @@
 @font-face {
   font-family: "Bebas Neue";
-  src: url("/static/fonts/BebasNeue.ttf") format("truetype"); }
+  src: url("/static/fonts/BebasNeue.ttf") format("truetype");
+}
 @font-face {
   font-family: "Inter";
-  src: url("/static/fonts/Inter.ttf") format("truetype"); }
+  src: url("/static/fonts/Inter.ttf") format("truetype");
+}
 @font-face {
   font-family: "Syne";
-  src: url("/static/fonts/Syne.ttf") format("truetype"); }
+  src: url("/static/fonts/Syne.ttf") format("truetype");
+}
 * {
-  box-sizing: border-box; }
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 
 a {
   color: black;
   cursor: pointer;
-  font-weight: 700; }
-  a:hover {
-    opacity: 0.9; }
+  font-weight: 700;
+}
+a:hover {
+  opacity: 0.9;
+}
 
 body, html {
   font-family: "Inter", sans-serif;
   margin: 0;
   overflow-x: hidden;
   padding: 0;
-  scroll-behavior: smooth; }
+  scroll-behavior: smooth;
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Syne", sans-serif;
   font-weight: 800 !important;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+}
 
 p {
-  font-size: 18px; }
+  font-size: 18px;
+}
+
+.arrow {
+  width: 100px;
+}
 
 #logo {
-  font-family: "Bebas Neue", sans-serif; }
+  font-family: "Bebas Neue", sans-serif;
+  text-transform: uppercase;
+}
 
 #menu a {
   /* Styling for links in menu */
   color: #1d2a3b;
   margin-right: 10px;
   text-decoration: none;
-  text-transform: uppercase; }
-#menu .btn-outline-dark {
-  /* Style for "Sign Up" button */
-  vertical-align: middle; }
+  text-transform: uppercase;
+}
 @media screen and (max-width: 991.98px) {
   #menu .col-lg-6 {
     padding-left: 0;
-    padding-right: 0; } }
+    padding-right: 0;
+  }
+}
 
-#header {
-  border-radius: 25px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3) !important;
-  overflow-x: hidden;
-  position: relative; }
-  #header #arrow1 {
-    position: absolute;
-    top: 5;
-    left: 58%;
-    transform: rotate(120deg);
-    width: 100px; }
+#header .arrow {
+  -webkit-transform: rotate(120deg);
+  -ms-transform: rotate(120deg);
+  transform: rotate(120deg);
+}
 
-#how-it-works h3 {
+#section1 .arrow {
+  -webkit-transform: rotate(150deg);
+  -ms-transform: rotate(150deg);
+  transform: rotate(150deg);
+}
+#section1 .card {
+  border: 4px solid var(--bs-dark);
+  -webkit-box-shadow: 0 0 0 0.25rem var(--bs-gray-500);
+  box-shadow: 0 0 0 0.25rem var(--bs-gray-500);
+}
+#section1 .card h5 {
   font-family: "Inter", sans-serif;
-  text-transform: none; }
-#how-it-works .tab-icon {
-  background-color: black;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  border-radius: 50%;
-  color: #f1f1f1;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  font-size: 16px;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding: 4px;
-  width: 40px;
-  height: 40px; }
+}

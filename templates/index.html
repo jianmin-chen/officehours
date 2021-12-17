@@ -6,41 +6,58 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="mx-4 mx-sm-4 mt-3 row" id="menu">
+        <div class="mx-3 mx-sm-5 mt-3 row" id="menu">
             <div class="col-lg-6">
                 <h1 id="logo">OfficeHours</h1>
             </div>
             <div class="col-lg-6 d-none d-lg-flex flex-row-reverse">
+                <h3>
+                    <a href="#">Log In</a>
+                    /
+                    <button class="btn btn-dark mb-1 ms-1">Get Started &rarr;</button>
+                </h3>
             </div>
         </div>
-        <div class="align-items-center m-3 me-0 px-4 pt-5 row" id="header">
-            <div class="col-lg-8">
+        <div class="align-items-center m-3 me-0 px-sm-4 row" id="header">
+            <div class="col-lg-7">
                 <h1 class="display-1">Office hours... for your inbox.</h1>
-                <p class="display-6 ms-5"><i>Clean up the clutter in your inbox + maintain a work/life balance by setting up office hours... for your inbox!</i></p>
+                <p class="display-6"><i>Clean up the clutter in your inbox + maintain a work/life balance by setting up office hours... for your inbox!</i></p>
+                <button class="btn btn-dark btn-lg mb-1 ms-1">Get Started &rarr;</button>
+            </div>
+            <div class="col-lg-1 my-3 my-lg-0">
+                <img class="arrow" src="{{ url_for('static', filename='images/arrow.png') }}"/>
             </div>
             <div class="col-lg-4">
-                <img id="arrow1" src="{{ url_for('static', filename='images/arrow.png') }}"/>
-                <img class="rounded-top shadow" src="https://proud-alligator.cloudvent.net/images/dashboard.png"/>
+                <img class="rounded shadow" src="https://proud-alligator.cloudvent.net/images/dashboard.png"/>
             </div>
         </div>
-        <div class="align-items-center m-3 my-5 row" id="how-it-works">
-            <h1 class="text-center">How does it work?</h1>
-            <div class="col-lg-8 py-3">
-                <div class="shadow mb-1 tab-icon">
-                    <span>1</span>
-                </div>
-                <div class="shadow mb-1 tab-icon">
-                    <span>2</span>
-                </div>
-                <div class="shadow mb-1 tab-icon">
-                    <span>3</span>
-                </div>
-                <div class="card-group py-2">
-                </div>
-            </div>
+        <div class="align-items-center flex-sm-row-reverse m-3 mt-5 row" id="section1">
             <div class="col-lg-4 py-3">
+                <h1>How does it work?</h1>
                 <p>It's as simple as it sounds: office hours for your inbox. Choose a time. People will only be able to message you during this time, and we'll notify your inbox if anybody messages you during these hours.</p>
             </div>
+            <div class="col-lg-8 py-3">
+                <div class="card m-3">
+                    <div class="card-body pt-4">
+                        <h5 class="text-center">Create a group and invite some people to it! If you have <a href="https://classroom.google.com">Google Classroom</a>, we can add all the members of a class automatically.</h5>
+                    </div>
+                </div>
+                <img class="arrow d-block mx-auto" src="{{ url_for('static', filename='images/arrow.png') }}"/>
+                <div class="card m-3">
+                    <div class="card-body pt-4">
+                        <h5 class="text-center">Set up some office hours. The people in your group will only be able to message you during these times, and you'll only be notified by us during these times.</h5>
+                    </div>
+                </div>
+                <img class="arrow d-block mx-auto" src="{{ url_for('static', filename='images/arrow.png') }}"/>
+                <div class="card m-3">
+                    <div class="card-body pt-4">
+                        <h5 class="text-center">Clear your email notifications by searching us! Boom, your email doesn't have messages you'll never answer anymore.</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-top p-3 text-center row">
+            <p>Source & more project info @ <a href="https://github.com/jianmin-chen/officehours">GitHub</a>.</p>
         </div>
     </div>
 {% endblock %}
