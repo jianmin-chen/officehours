@@ -1,0 +1,59 @@
+@import "base";
+
+#menu {
+    a {
+        /* Styling for links in menu */
+        color: #1d2a3b;
+        margin-right: 10px;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    .btn-outline-dark {
+        /* Style for "Sign Up" button */
+        vertical-align: middle;
+    }
+
+    @media screen and (max-width: $lg) {
+        .col-lg-6 {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+}
+
+#how-it-works {
+    h3 {
+        font-family: "Inter", sans-serif;
+        text-transform: none;
+    }
+
+    #card1-icon, #card2-icon, #card3-icon {
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        border-radius: 50%;
+        color: #f1f1f1;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        font-size: 16px;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        padding: 4px;
+        width: 40px; height: 40px;
+    }
+
+    #card1-icon {
+        background-color: #f87171;
+    }
+
+    #card2-icon {
+        background-color: #60a5fa;
+    }
+
+    #card3-icon {
+        background-color: #34d399;
+    }
+}
