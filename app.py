@@ -26,7 +26,6 @@ def after_request(response):
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
-db.create_all()
 
 # Configure email
 app.config["MAIL_USERNAME"] = environ.get("MAIL_USERNAME")
@@ -43,6 +42,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure custom variables
+app.config["AVATAR_FOLDER"] = "static/images/avatars"
+app.config["DOMAIN_URL"] = "http://127.0.0.1:5000"
 app.config["GITHUB_LINK"] = "https://github.com/jianmin-chen/officehours"
 
 # Configure routes

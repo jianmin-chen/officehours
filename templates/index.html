@@ -10,23 +10,23 @@
 
 {% block body %}
     <div class="container-fluid">
-        <div class="mx-3 mx-sm-5 mt-3 row" id="menu">
+        <div class="border-bottom px-3 px-sm-5 pt-3 row" id="menu">
             <div class="col-lg-6">
                 <h1 id="logo">OfficeHours</h1>
             </div>
             <div class="col-lg-6 d-none d-lg-flex flex-row-reverse">
                 <h3>
-                    <a href="{{ url_for('general.login') }}">Log In</a>
+                    <a href="{{ url_for('general.account') }}">Log In</a>
                     /
-                    <a class="btn btn-dark mb-2 ms-2 text-white" href="{{ url_for('general.signup') }}">Get Started &rarr;</a>
+                    <a class="btn btn-dark mb-2 ms-2 text-white" href="{{ url_for('general.account') }}">Get Started &rarr;</a>
                 </h3>
             </div>
         </div>
-        <div class="align-items-center m-3 me-0 px-sm-4 row" id="header">
+        <div class="align-items-center m-3 me-0 mt-4 px-sm-4 row" id="header">
             <div class="col-lg-7">
                 <h1 class="display-1">Office hours... for your inbox.</h1>
                 <p class="display-6"><i>Clean up the clutter in your inbox + maintain a work/life balance by setting up office hours... for your inbox!</i></p>
-                <a class="btn btn-dark btn-lg mb-1 ms-1 text-white" href="{{ url_for('general.signup') }}">Get Started &rarr;</a>
+                <a class="btn btn-dark btn-lg mb-1 ms-1 text-white" href="{{ url_for('general.account') }}">Get Started &rarr;</a>
             </div>
             <div class="col-lg-1 my-3 my-lg-0">
                 <img class="arrow" src="{{ url_for('static', filename='images/arrow.png') }}"/>
@@ -35,29 +35,33 @@
                 <img class="rounded shadow" src="https://proud-alligator.cloudvent.net/images/dashboard.png"/>
             </div>
         </div>
-        <div class="align-items-center flex-sm-row-reverse m-3 mt-5 row" id="section1">
+        <div class="align-items-center flex-sm-row-reverse m-3 row" id="section1">
             <div class="col-lg-4 py-3">
                 <h1>How does it work?</h1>
+                <p>Do you ever find yourself having trouble keeping track of which emails are which? Tired of hearing people ask you why you haven't replied to their email yet (because you missed it)? Finding yourself constantly checking your email inbox all the time, even when you're supposed to be enjoying the moment? OfficeHours is designed to solve these issues.</p>
                 <p>It's as simple as it sounds: office hours for your inbox. Choose a time. People will only be able to message you during this time, and we'll notify your inbox if anybody messages you during these hours.</p>
+                <p>The more important thing is that it's divided into groups, so you'll also be able to send out public service announcements to everyone in a group while also privately chatting with each person in the group: the organization has already been done for you! And once you're done for the day, nobody will bother you with Saturday stress emails anymore.</p>
             </div>
             <div class="col-lg-8 py-3">
                 <div class="card m-3">
                     <div class="card-body pt-4">
-                        <h5 class="text-center">Create a group and invite some people to it! If you have <a href="https://classroom.google.com">Google Classroom</a>, we can add all the members of a class automatically.</h5>
+                        <h5 class="text-center">Create a group and invite some people to it! If you sign up with Google and use <a href="https://classroom.google.com">Google Classroom</a>, we can add all the members of a class automatically.</h5>
                     </div>
                 </div>
                 <img class="arrow d-block mx-auto" src="{{ url_for('static', filename='images/arrow.png') }}"/>
                 <div class="card m-3">
                     <div class="card-body pt-4">
-                        <h5 class="text-center">Set up some office hours. The people in your group will only be able to message you during these times, and you'll only be notified by us during these times.</h5>
+                        <h5 class="text-center">Set up some office hours. The people in your group will only be able to message you during these times, and you'll only be notified by us during these times. If you need to send a message to everyone in the group, you can do that too.</h5>
                     </div>
                 </div>
                 <img class="arrow d-block mx-auto" src="{{ url_for('static', filename='images/arrow.png') }}"/>
-                <div class="card m-3">
+                <div class="card m-3 mb-5 mb-lg-4">
                     <div class="card-body pt-4">
-                        <h5 class="text-center">Clear your email notifications by searching us! Boom, your email doesn't have messages you'll never answer anymore.</h5>
+                        <h5 class="text-center">Clear your email notifications once you're done, or batch delete by searching for emails from us! Boom, your email doesn't have messages you'll never answer anymore.</h5>
                     </div>
                 </div>
+                <h1>Not convinced?</h1>
+                <p>Sure, you can use other chat apps. But how complicated are they? That bites into your time. Do you use them for other purposes? That's a issue if you're mixing your work and personal chats together. OfficeHours simplifies everything - and you don't have to tell people when you're "available" anymore.</p>
             </div>
         </div>
         <div class="border-top p-3 text-center row">
