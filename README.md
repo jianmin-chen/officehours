@@ -38,5 +38,3 @@ At this point, OfficeHours is simply an MVP. There are so many more features tha
 * Rich text editing for messages
 * OAuth with Google and integration with the [Google Classroom API](https://classroom.google.com/) so that teachers can directly add their students automatically instead of manually inviting students
 * Pricing for users that go about a certain amount of data
-
-As for me, **I'm planning to join a team in my next hackathon**.
