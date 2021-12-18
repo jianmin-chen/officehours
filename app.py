@@ -26,6 +26,7 @@ def after_request(response):
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
+db.create_all()
 
 # Configure email
 app.config["MAIL_USERNAME"] = environ.get("MAIL_USERNAME")

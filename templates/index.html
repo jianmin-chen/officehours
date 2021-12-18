@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    Home
+{% endblock %}
+
 {% block resources %}
     <link href="{{ url_for('static', filename='styles/index.css') }}" rel="stylesheet"/>
 {% endblock %}
@@ -14,7 +18,7 @@
                 <h3>
                     <a href="{{ url_for('general.login') }}">Log In</a>
                     /
-                    <a class="btn btn-dark mb-1 ms-1 text-white" href="{{ url_for('general.signup') }}">Get Started &rarr;</a>
+                    <a class="btn btn-dark mb-2 ms-2 text-white" href="{{ url_for('general.signup') }}">Get Started &rarr;</a>
                 </h3>
             </div>
         </div>
