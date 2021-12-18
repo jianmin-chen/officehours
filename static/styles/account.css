@@ -71,6 +71,10 @@ p {
   }
 }
 
+.form-floating input:focus {
+  border-color: var(--bs-dark);
+  box-shadow: none !important;
+}
 .form-floating label {
   /* Align label with input */
   margin-left: 0.75rem;

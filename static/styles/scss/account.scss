@@ -23,6 +23,11 @@
 }
 
 .form-floating {
+    input:focus {
+        border-color: var(--bs-dark);
+        box-shadow: none !important;
+    }
+
     label {
         /* Align label with input */
         margin-left: .75rem;
