@@ -1,0 +1,57 @@
+@import "base";
+
+.container-fluid {
+    background-image: url("/static/images/wave.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    > .row {
+        @media screen and (max-width: $lg) {
+            padding-left: 1rem;
+            padding-right: 1rem;
+
+            .col-lg-6 {
+                border: none;
+
+                .form-floating {
+                    /* Change margin-bottom of form inputs */
+                    margin-bottom: 0.5rem !important;
+                }
+            }
+        }
+    }
+}
+
+.form-floating {
+    label {
+        /* Align label with input */
+        margin-left: .75rem;
+    }
+}
+
+.text-special {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+
+    &:before, &:after {
+        border-bottom: 1px solid var(--bs-secondary);
+        content: "";
+        -webkit-box-flex: 1;
+            -ms-flex: 1;
+                flex: 1;
+        margin: auto;
+    }
+
+    &:before {
+        margin-right: 10px;
+    }
+
+    &:after {
+        margin-left: 10px;
+    }
+}

@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block resources %}
+    <link href="{{ url_for('static', filename='styles/account.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid h-100">
+        <div class="align-items-center h-100 justify-content-center row">
+            <div class="bg-white col-lg-11 my-3 p-4 p-lg-5 shadow">
+                <div class="row">
+                    <div class="border-end col-lg-6 pb-3 pb-lg-0 text-lg-end">
+                        <h1 class="display-1">Sign Up</h1>
+                        <button class="btn btn-dark d-block mb-3 w-100">Sign Up w/ Google</button>
+                        <p class="text-special">or</p>
+                        <form>
+                            <div class="mb-2 mb-lg-3 row">
+                                <div class="col-lg-12 form-floating">
+                                    <input autocomplete="off" class="form-control" id="username" maxlength="64" name="username" placeholder="John Doe" required type="text"/>
+                                    <label for="username">Name</label>
+                                </div>
+                            </div>
+                            <div class="mb-2 mb-lg-3 row">
+                                <div class="col-lg-12 form-floating">
+                                    <input autocomplete="off" class="form-control" id="email" maxlength="64" name="email" placeholder="johndoe@gmail.com" required type="email"/>
+                                    <label for="email">Email</label>
+                                </div>
+                            </div>
+                            <div class="mb-2 mb-lg-3 row">
+                                <div class="col-lg-12 form-floating">
+                                    <input autocomplete="off" class="form-control" id="password" maxlength="16" name="password" placeholder="*****" required type="password"/>
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-dark d-block w-100" type="submit">Sign Up</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-6 pt-2 pt-sm-0">
+                        <h1 class="display-1">Log In</h1>
+                        <button class="btn btn-dark d-block mb-3 w-100">Log Up w/ Google</button>
+                        <p class="text-special">or</p>
+                        <form>
+                            <div class="mb-2 mb-lg-3 row">
+                                <div class="col-lg-12 form-floating">
+                                    <input autocomplete="off" class="form-control" id="email" maxlength="64" name="email" placeholder="johndoe@gmail.com" required type="email"/>
+                                    <label for="email">Email</label>
+                                </div>
+                            </div>
+                            <div class="mb-2 mb-lg-3 row">
+                                <div class="col-lg-12 form-floating">
+                                    <input autocomplete="off" class="form-control" id="password" maxlength="16" name="password" placeholder="*****" required type="password"/>
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
+                            <button class="btn btn-dark d-block w-100" type="submit">Log In</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -12,9 +12,9 @@
             </div>
             <div class="col-lg-6 d-none d-lg-flex flex-row-reverse">
                 <h3>
-                    <a href="#">Log In</a>
+                    <a href="{{ url_for('general.login') }}">Log In</a>
                     /
-                    <button class="btn btn-dark mb-1 ms-1">Get Started &rarr;</button>
+                    <a class="btn btn-dark mb-1 ms-1 text-white" href="{{ url_for('general.signup') }}">Get Started &rarr;</a>
                 </h3>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <div class="col-lg-7">
                 <h1 class="display-1">Office hours... for your inbox.</h1>
                 <p class="display-6"><i>Clean up the clutter in your inbox + maintain a work/life balance by setting up office hours... for your inbox!</i></p>
-                <button class="btn btn-dark btn-lg mb-1 ms-1">Get Started &rarr;</button>
+                <a class="btn btn-dark btn-lg mb-1 ms-1 text-white" href="{{ url_for('general.signup') }}">Get Started &rarr;</a>
             </div>
             <div class="col-lg-1 my-3 my-lg-0">
                 <img class="arrow" src="{{ url_for('static', filename='images/arrow.png') }}"/>
@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="border-top p-3 text-center row">
-            <p>Source & more project info @ <a href="https://github.com/jianmin-chen/officehours">GitHub</a>.</p>
+            <p>Source & more project info @ <a href="{{ config['GITHUB_LINK'] }}">GitHub</a>.</p>
         </div>
     </div>
 {% endblock %}

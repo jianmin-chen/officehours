@@ -16,6 +16,15 @@ def index():
 def signup():
     """Route users use to sign up for an account."""
     if request.method == "GET":
-        return render_template("signup.html")
+        return render_template("account.html")
+
+    return redirect("/")
+
+
+@blueprint.route("/login", methods=["GET", "POST"])
+def login():
+    """Route users use to log into their account."""
+    if request.method == "GET":
+        return render_template("account.html")
 
     return redirect("/")
