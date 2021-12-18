@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_mail import Mail
 from flask_session import Session
+from flask_socketio import SocketIO, emit
 from os import environ
 
 from database import db
@@ -41,6 +42,9 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Configure sockets
+socketio = SocketIO(app)
+
 # Configure custom variables
 app.config["AVATAR_FOLDER"] = "static/images/avatars"
 app.config["DOMAIN_URL"] = "http://127.0.0.1:5000"
@@ -48,3 +52,6 @@ app.config["GITHUB_LINK"] = "https://github.com/jianmin-chen/officehours"
 
 # Configure routes
 app.register_blueprint(general.blueprint)
+
+if __name__ == "__main__":
+    socketio.run(app)

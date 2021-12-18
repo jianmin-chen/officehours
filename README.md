@@ -25,7 +25,7 @@ I started by laying out the design first and then dealing with the backend logic
 
 ## Challenges I ran into
 
-I had planned a bigger scope with this project, but I learned that for hackathons, you need to really go deep into the problem you're trying to solve and focus on the most necessary parts. This was the case for me. In addition, I had to utilize time management to actually get this project on time in addition to attending to other personal responsibilities. 
+I had planned a bigger scope with this project, but I learned that for hackathons, you need to really go deep into the problem you're trying to solve and focus on the most necessary parts. This was the case for me. In addition, I had to utilize time management to actually get this project on time in addition to attending to other personal responsibilities.
 
 ## Accomplishments that I'm proud of/what I learned
 
@@ -36,6 +36,7 @@ Overall, I'm proud of what I was able to create during my first hackathon. I lea
 At this point, OfficeHours is simply an MVP. There are so many more features that could be added to it in order to make it more usable. By features, I don't mean making it more complicated. That only causes problems. Rather, here are some of the features I would consider adding:
 
 * A better designed sign up/log in page and dashboard page
+* Direct invite links + extra security to ensure that only those who received a user's invite link can join
 * Rich text editing for messages
 * OAuth with Google and integration with the [Google Classroom API](https://classroom.google.com/) so teachers can directly add their students automatically instead of manually inviting students
 * Pricing for users that go above a certain amount of data

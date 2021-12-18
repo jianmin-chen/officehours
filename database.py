@@ -1,6 +1,5 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from uuid import uuid4
 
 # Set up database
 db = SQLAlchemy()
@@ -8,7 +7,7 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    uid = db.Column(db.String, default=str(uuid4()), nullable=False)
+    uid = db.Column(db.String, nullable=False, unique=True)
     username = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
@@ -16,6 +15,47 @@ class User(db.Model):
     google_account = db.Column(db.Boolean, default=False, nullable=False)
     token = db.Column(db.String)
 
-    def __str__(self):
-        """Return string version of user."""
-        return f"User #{self.id}: {self.name}"
+    in_charge = db.relationship("Group", back_populates="creator")
+    part_of = db.relationship("Member", back_populates="user")
+    messages = db.relationship("Message", back_populates="user")
+
+class Group(db.Model):
+    __tablename__ = "groups"
+    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.String, nullable=False, unique=True)
+    name = db.Column(db.String(64), nullable=False)
+    openhr = db.Column(db.Time, nullable=False)
+    closehr = db.Column(db.Time, nullable=False)
+    timezone
+    creator_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    creator = db.relationship("User", back_populates="in_charge")
+    members = db.relationship("Member", back_populates="group")
+    messages = db.relationship("Message", back_populates="group")
+
+
+class Member(db.Model):
+    __tablename__ = "members"
+    id = db.Column(db.Integer, primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey("groups.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    group = db.relationship("Group", back_populates="members")
+    user = db.relationship("User", back_populates="part_of")
+
+class Message(db.Model):
+    __tablename__ = "messages"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String, nullable=False)
+    public = db.Column(db.Boolean, default=False, nullable=False)
+    group_id = db.Column(db.Integer, db.ForeignKey("groups.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+
+    group = db.relationship("Group", back_populates="messages")
+    user = db.relationship("User", back_populates="messages")
+
+
+
+
+
+

@@ -47,8 +47,17 @@ def signup():
     with open(avatar_filename, "wb") as file:
         file.write(avatar_data)
 
+    # Create unique ID
+    uid = str(uuid4())
+    while db.session.execute(
+            select(User).where(User.uid == uid)
+        ).fetchone():
+            # ID isn't unique, so generate new one
+            uid = str(uuid4())
+
     # Create user
     user = User(
+        uid=uid,
         username=username,
         email=email,
         password=generate_password_hash(password),
