@@ -63,7 +63,7 @@ p {
     padding-right: 1rem;
   }
   .container-fluid > .row .col-lg-6 {
-    border: none;
+    border: none !important;
   }
   .container-fluid > .row .col-lg-6 .form-floating {
     /* Change margin-bottom of form inputs */

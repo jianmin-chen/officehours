@@ -13,6 +13,9 @@
         <div class="align-items-center h-100 justify-content-center row">
             <div class="bg-white col-lg-11 my-3 p-4 p-lg-5 shadow">
                 <div class="row">
+                    {% if get_flashed_messages() %}
+                        <div class="mb-3 p-3 rounded shadow">{{ get_flashed_messages() | join(" ") }}</div>
+                    {% endif %}
                     <div class="border-end col-lg-6 pb-3 pb-lg-0 text-lg-end">
                         <h1 class="display-1">Sign Up</h1>
                         <button class="btn btn-dark d-block mb-3 w-100">Sign Up w/ Google</button>

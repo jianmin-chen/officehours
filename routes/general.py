@@ -8,7 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import os
 
 from database import db, User
-from helpers import logged_in
+from helpers import logged_in, login_required
 
 # Configure blueprint
 blueprint = Blueprint("general", __name__)
@@ -52,7 +52,7 @@ def signup():
         username=username,
         email=email,
         password=generate_password_hash(password),
-        avatar=avatar_filename,
+        avatar=avatar_filename.replace("\\", "/"),
         token=str(uuid4())
     )
 
@@ -91,8 +91,7 @@ def login():
 
     user = db.session.execute(
         select(User).where(
-            (User.email == email) &
-            (check_password_hash(User.password, password))
+            User.email == email
         )
     ).fetchone()
 
@@ -104,6 +103,10 @@ def login():
         # User hasn't verified their email yet
         flash("Oops, it looks like you haven't verified your email yet! Verify it to get started with OfficeHours.")
         return redirect("/account")
+    elif not check_password_hash(user[0].password, password):
+        # Incorrect password
+        flash("Oops, looks like your email or password is incorrect. Try again.")
+        return redirect("/account")
 
     # Log user in
     session["user_id"] = user[0].id
@@ -113,6 +116,7 @@ def login():
 
 
 @blueprint.route("/logout")
+@login_required
 def logout():
     """Log out users."""
     session.clear()

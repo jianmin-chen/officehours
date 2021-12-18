@@ -22,7 +22,10 @@
                 </h3>
             </div>
         </div>
-        <div class="align-items-center m-3 me-0 mt-4 px-sm-4 row" id="header">
+        <div class="align-items-center m-3 me-sm-0 mt-4 px-sm-3 row" id="header">
+            {% if get_flashed_messages() %}
+                <div class="mb-3 mb-sm-2 mx-lg-2 p-3 rounded shadow">{{ get_flashed_messages() | join(" ") }}</div>
+            {% endif %}
             <div class="col-lg-7">
                 <h1 class="display-1">Office hours... for your inbox.</h1>
                 <p class="display-6"><i>Clean up the clutter in your inbox + maintain a work/life balance by setting up office hours... for your inbox!</i></p>
