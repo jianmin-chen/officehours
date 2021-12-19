@@ -43,7 +43,7 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
 }
 
-input:focus, select:focus, textarea:focus {
+button:focus, input:focus, select:focus, textarea:focus {
   border-color: var(--bs-dark) !important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
@@ -113,24 +113,24 @@ h1, h2 h3, h4, h5, h6 {
   border-bottom: 3px solid var(--bs-dark);
 }
 
-.chatroom {
+#chatroom {
   height: 100%;
 }
-.chatroom .message {
+#chatroom .message {
   margin-bottom: 0.5rem;
 }
-.chatroom .message .message-content {
+#chatroom .message .message-content {
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
   display: inline-block;
   border-radius: 15px;
   padding: 10px 20px;
 }
-.chatroom .self-message {
+#chatroom .self-message {
   clear: left;
   text-align: right;
 }
-.chatroom .self-message .message-content {
+#chatroom .self-message .message-content {
   background-color: var(--bs-dark);
   color: white;
 }

@@ -2,7 +2,7 @@ let socket;
 
 const loadChatroom = (groupID, memberID) => {
     socket.emit("load_chatroom", {
-        group_id: groupID,
+        groupID: groupID,
         memberID: memberID
     });
 
@@ -13,5 +13,7 @@ const loadChatroom = (groupID, memberID) => {
 
 window.onload = () => {
     socket = io.connect(`http://${document.domain}:${location.port}/`);
-    socket.on("error", (err) => {});
+    socket.on("error", (err) => {
+        console.log(err);
+    });
 }
