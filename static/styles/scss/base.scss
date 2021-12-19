@@ -39,14 +39,27 @@ body, html {
     height: 100%;
 }
 
+button, input, textarea {
+    outline: none;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: "Syne", sans-serif;
     font-weight: 800 !important;
     text-transform: uppercase;
 }
 
+input:focus, select:focus, textarea:focus {
+    border-color: var(--bs-dark) !important;
+    box-shadow: none !important;
+}
+
 p {
     font-size: 18px;
+}
+
+textarea {
+    resize: none;
 }
 
 .arrow {

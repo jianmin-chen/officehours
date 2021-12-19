@@ -136,6 +136,15 @@ def load_chatroom(json):
         socketio.emit("Error", {
             "desc": "Oops, looks like you're not logged in yet!"
         })
+
+    group_id = json.get("group_id")
+
+    if not group_id:
+        # Information not provided
+        socketio.emit("Error", {
+            "desc": "Oops, looks like you're not logged in yet!"
+        })
+
     socketio.emit("Success", {})
 
 

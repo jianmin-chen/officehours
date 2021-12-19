@@ -33,14 +33,27 @@ body, html {
   height: 100%;
 }
 
+button, input, textarea {
+  outline: none;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: "Syne", sans-serif;
   font-weight: 800 !important;
   text-transform: uppercase;
 }
 
+input:focus, select:focus, textarea:focus {
+  border-color: var(--bs-dark) !important;
+  box-shadow: none !important;
+}
+
 p {
   font-size: 18px;
+}
+
+textarea {
+  resize: none;
 }
 
 .arrow {
@@ -56,15 +69,85 @@ body, html {
   background-color: #f7f7f7;
 }
 
+h1, h2 h3, h4, h5, h6 {
+  font-family: "Inter", sans-serif;
+}
+
+.container-fluid > .row > * {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.list-group-item {
+  padding-left: 0;
+  padding-right: 0;
+}
+.list-group-item a {
+  font-weight: normal;
+  text-decoration: none;
+}
+.list-group-item a p {
+  margin-bottom: 0;
+}
+.list-group-item a p.text-muted {
+  font-size: 14px;
+  font-style: italic;
+}
+
 .nav-tabs {
-  overflow-x: auto;
-  overflow-y: hidden;
-  display: -webkit-box;
-  display: -moz-box;
+  border-bottom: none;
+  width: 100%;
 }
-.nav-tabs a {
-  font-family: "Syne", sans-serif;
+.nav-tabs .nav-item {
+  text-transform: uppercase;
 }
-.nav-tabs > li {
-  float: none;
+.nav-tabs .nav-item a {
+  border-bottom: 1px solid var(--bs-dark);
+  text-decoration: none;
+}
+.nav-tabs .nav-item a:hover {
+  color: var(--bs-dark);
+}
+.nav-tabs .nav-item .active {
+  border-bottom: 3px solid var(--bs-dark);
+}
+
+.chatroom {
+  height: 100%;
+}
+.chatroom .message {
+  margin-bottom: 0.5rem;
+}
+.chatroom .message .message-content {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  border-radius: 15px;
+  padding: 10px 20px;
+}
+.chatroom .self-message {
+  clear: left;
+  text-align: right;
+}
+.chatroom .self-message .message-content {
+  background-color: var(--bs-dark);
+  color: white;
+}
+
+.input-inline {
+  display: flex;
+}
+.input-inline button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.input-inline input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.profile-image {
+  /* Set up styles for profile images */
+  border-radius: 50%;
+  vertical-align: bottom;
+  width: 25px;
 }

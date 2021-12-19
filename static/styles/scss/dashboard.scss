@@ -4,17 +4,100 @@ body, html {
     background-color: #f7f7f7;
 }
 
-.nav-tabs {
-    overflow-x: auto;
-    overflow-y: hidden;
-    display: -webkit-box;
-    display: -moz-box;
+h1, h2 h3, h4, h5, h6 {
+    font-family: "Inter", sans-serif;
+}
+
+.container-fluid {
+    > .row > * {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+.list-group-item {
+    padding-left: 0;
+    padding-right: 0;
 
     a {
-        font-family: "Syne", sans-serif;
+        font-weight: normal;
+        text-decoration: none;
+
+        p {
+            margin-bottom: 0;
+
+            &.text-muted {
+                font-size: 14px;
+                font-style: italic;
+            }
+        }
+    }
+}
+
+.nav-tabs {
+    border-bottom: none;
+    width: 100%;
+
+    .nav-item {
+        text-transform: uppercase;
+
+        a {
+            border-bottom: 1px solid var(--bs-dark);
+            text-decoration: none;
+
+            &:hover {
+                color: var(--bs-dark);
+            }
+        }
+
+        .active {
+            border-bottom: 3px solid var(--bs-dark);
+        }
+    }
+}
+
+.chatroom {
+    height: 100%;
+
+    .message {
+        margin-bottom: 0.5rem;
+
+        .message-content {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            border-radius: 15px;
+            padding: 10px 20px;
+        }
     }
 
-    &> li {
-        float: none;
+    .self-message {
+        clear: left;
+        text-align: right;
+
+        .message-content {
+            background-color: var(--bs-dark);
+            color: white;
+        }
     }
+}
+
+.input-inline {
+    display: flex;
+
+    button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+
+.profile-image {
+    /* Set up styles for profile images */
+    border-radius: 50%;
+    vertical-align: bottom;
+    width: 25px;
 }

@@ -11,36 +11,150 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid position-relative">
-    <div class="g-3 my-1 mb-4 row">
-        <div class="col-lg-6">
-            <div class="bg-white p-4 pb-3 pb-lg-4 rounded shadow">
+<div class="container-fluid h-100">
+    <div class="py-5 row h-100">
+        <div class="col-lg-6 h-lg-75">
+            <div class="bg-white me-2 p-3 shadow">
                 <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#in-charge">I'm in charge of...</a>
+                    <li class="nav-item py-1 py-sm-3">
+                        <a class="active px-3" data-bs-toggle="tab" href="#in-charge">I'm in charge of...</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="tab" href="#part-of">I'm a member of...</a>
+                    <li class="nav-item py-1 py-sm-3">
+                        <a class="px-3" data-bs-toggle="tab" href="#part-of">I'm a member of...</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('general.logout') }}">Log Out &rarr;</a>
+                    <li class="nav-item py-1 py-sm-3">
+                        <a class="px-3" href="{{ url_for('general.logout') }}">Log Out &rarr;</a>
                     </li>
                 </ul>
-                <div class="tab-content p-3">
-                    <div class="tab-pane active" id="in-charge">
+                <div class="tab-content px-3 py-1">
+                    <div class="tab-pane active fade show" id="in-charge">
                         <p>I'm in charge of...</p>
-                    </div>
-                    <div class="tab-pane" id="part-of">
-                        <p>I'm a member of...</p>
+                        <form>
+                            <input class="form-control mb-1" name="name" placeholder="Name of group..." required type="text"/>
+                            <div class="gx-1 mb-2 row">
+                                <div class="col-4">
+                                    <input class="form-control" name="openhr" required type="time" value="12:00"/>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" name="closehr" required type="time" value="13:00"/>
+                                </div>
+                                <div class="col-4">
+                                    <select class="form-select" name="timezone">
+                                        <option disabled selected value="">Timezone</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="btn btn-dark d-block w-100" type="submit">Create!</button>
+                        </form>
+                        <hr/>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item"></li>
+                            <li class="list-group-item">
+                                <a data-bs-toggle="collapse" href="#group1">
+                                    <p>The Coding Club</p>
+                                    <p class="text-muted">153138@cspge.org, 152432@cpsge.org</p>
+                                </a>
+                            </li>
+                            <div class="collapse" id="group1">
+                                <div class="px-3 pt-3">
+                                    <form class="input-inline">
+                                        <input name="group_id" type="hidden" value=""/>
+                                        <input class="form-control" name="email" placeholder="Invite someone by email..." required type="email"/>
+                                        <button class="btn btn-dark" type="submit">Invite!</button>
+                                    </form>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <a data-bs-toggle="collapse">
+                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
+                                                153138@cspge.org
+                                            </a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a data-bs-toggle="collapse">
+                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
+                                                153138@cspge.org
+                                            </a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a data-bs-toggle="collapse">
+                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
+                                                153138@cspge.org
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <p>AP English Department</p>
+                                    <p class="text-muted">arobert@gmail.com, ssarah@yahoo.com, tyehrig@gmail.com, ...</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">
+                                    <p>Math Club</p>
+                                    <p class="text-muted">No group members so far. Go invite some!</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="part-of">
+                        <p>I'm a member of...</p>
+                        <form class="input-inline">
+                            <input class="form-control" name="code" placeholder="Join group by code..." required type="text"/>
+                            <button class="btn btn-dark" type="submit">Join!</button>
+                        </form>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <a data-bs-toggle="collapse">
+                                    <p>Teacher Faculty</p>
+                                    <p class="text-muted">led by adonatelli@aol.com</p>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a data-bs-toggle="collapse">
+                                    <p>MCAS FAQs</p>
+                                    <p class="text-muted">led by showl@outlook.com</p>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="bg-white border p-4 p-lg-5 rounded shadow">
+            <div class="bg-white py-1 shadow">
+                <div class="border-bottom px-3 pt-3">
+                    <h4>Biology Honors</h4>
+                    <p class="text-muted">tberry@gmail.com</p>
+                </div>
+                <div class="chatroom p-3">
+                    <div class="message others-message">
+                        <div class="message-content">
+                            Reminder: Your projects are due on Friday! I'm not giving extra time this time around.
+                        </div>
+                    </div>
+                    <div class="message self-message">
+                        <div class="message-content">
+                            Okay. I still don't under hypertonic and hypotonic solutions though.
+                        </div>
+                    </div>
+                    <div class="message others-message">
+                        <div class="message-content">
+                            What's the problem you're having with it?
+                        </div>
+                    </div>
+                    <div class="message self-message">
+                        <div class="message-content">
+                            Okay, I think I'm thinking about it in the wrong way. During our science experiment, I though the syrup was hypertonic because it had more substance. But that's wrong, isn't it?
+                        </div>
+                    </div>
+                </div>
+                <form class="border-top clearfix p-3">
+                    <textarea class="form-control mb-2" name="message" placeholder="Send message to tberry@gmail.com..."></textarea>
+                    <button class="btn btn-dark float-end rounded-pill" type="submit">Send &rarr;</button>
+                </form>
             </div>
         </div>
     </div>
