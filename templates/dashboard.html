@@ -14,31 +14,31 @@
 <div class="container-fluid h-100">
     <div class="py-5 row h-100">
         <div class="col-lg-6 h-lg-75">
-            <div class="bg-white me-2 p-3 shadow">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item py-1 py-sm-3">
+            <div class="bg-white me-2 p-3 shadow h-100">
+                <ul class="mb-2 mb-sm-0 nav nav-tabs">
+                    <li class="nav-item py-1 py-xl-3">
                         <a class="active px-3" data-bs-toggle="tab" href="#in-charge">I'm in charge of...</a>
                     </li>
-                    <li class="nav-item py-1 py-sm-3">
+                    <li class="nav-item py-1 py-xl-3">
                         <a class="px-3" data-bs-toggle="tab" href="#part-of">I'm a member of...</a>
                     </li>
-                    <li class="nav-item py-1 py-sm-3">
+                    <li class="nav-item py-1 py-xl-3">
                         <a class="px-3" href="{{ url_for('general.logout') }}">Log Out &rarr;</a>
                     </li>
                 </ul>
                 <div class="tab-content px-3 py-1">
                     <div class="tab-pane active fade show" id="in-charge">
                         <p>I'm in charge of...</p>
-                        <form>
-                            <input class="form-control mb-1" name="name" placeholder="Name of group..." required type="text"/>
+                        <form action="/create" method="post">
+                            <input autocomplete="off" class="form-control mb-1" name="name" placeholder="Name of group..." required type="text"/>
                             <div class="gx-1 mb-2 row">
-                                <div class="col-4">
+                                <div class="col-6 col-lg-4 mb-2 mb-lg-0">
                                     <input class="form-control" name="openhr" required type="time" value="12:00"/>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-6 col-lg-4">
                                     <input class="form-control" name="closehr" required type="time" value="13:00"/>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-lg-4">
                                     <select class="form-select" name="timezone">
                                         <option disabled selected value="">Timezone</option>
                                         <option value="2">Two</option>
@@ -53,17 +53,29 @@
                             <li class="list-group-item">
                                 <a data-bs-toggle="collapse" href="#group1">
                                     <p>The Coding Club</p>
-                                    <p class="text-muted">153138@cspge.org, 152432@cpsge.org</p>
+                                    <p class="text-muted">153138@domain.org, 152432@domain.org</p>
                                 </a>
                             </li>
                             <div class="collapse" id="group1">
-                                <div class="px-3 pt-3">
-                                    <form class="input-inline">
+                                <div class="px-sm-3 pt-3">
+                                    <form action="/invite" class="input-inline" method="post">
                                         <input name="group_id" type="hidden" value=""/>
-                                        <input class="form-control" name="email" placeholder="Invite someone by email..." required type="email"/>
+                                        <input autocomplete="off" class="form-control" name="email" placeholder="Invite someone by email..." required type="email"/>
                                         <button class="btn btn-dark" type="submit">Invite!</button>
                                     </form>
                                     <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <a data-bs-toggle="collapse">
+                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
+                                                153138@cspge.org
+                                            </a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a data-bs-toggle="collapse">
+                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
+                                                153138@cspge.org
+                                            </a>
+                                        </li>
                                         <li class="list-group-item">
                                             <a data-bs-toggle="collapse">
                                                 <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
@@ -101,8 +113,8 @@
                     </div>
                     <div class="tab-pane fade" id="part-of">
                         <p>I'm a member of...</p>
-                        <form class="input-inline">
-                            <input class="form-control" name="code" placeholder="Join group by code..." required type="text"/>
+                        <form action="/join" class="input-inline" method="post">
+                            <input autocomplete="off" class="form-control" name="code" placeholder="Join group by code..." required type="text"/>
                             <button class="btn btn-dark" type="submit">Join!</button>
                         </form>
                         <ul class="list-group list-group-flush">
@@ -151,7 +163,7 @@
                         </div>
                     </div>
                 </div>
-                <form class="border-top clearfix p-3">
+                <form class="border-top clearfix p-3" id="send-message">
                     <textarea class="form-control mb-2" name="message" placeholder="Send message to tberry@gmail.com..."></textarea>
                     <button class="btn btn-dark float-end rounded-pill" type="submit">Send &rarr;</button>
                 </form>

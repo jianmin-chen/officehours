@@ -30,6 +30,11 @@ body, html {
   overflow-x: hidden;
   padding: 0;
   scroll-behavior: smooth;
+  height: 100%;
+}
+
+button, input, textarea {
+  outline: none;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -38,8 +43,18 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
 }
 
+input:focus, select:focus, textarea:focus {
+  border-color: var(--bs-dark) !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
 p {
   font-size: 18px;
+}
+
+textarea {
+  resize: none;
 }
 
 .arrow {
