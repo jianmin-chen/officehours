@@ -1,9 +1,11 @@
+from datetime import time
 from flask import Blueprint, current_app, flash, jsonify, redirect, render_template, request, session
 from flask_mail import Mail, Message
 from sqlalchemy import select
+from uuid import uuid4
 
 from database import db, User, Group, Member, Message
-from helpers import logged_in, login_required
+from helpers import socketio, logged_in, login_required
 
 # Configure blueprint
 blueprint = Blueprint("dashboard", __name__)
@@ -13,6 +15,43 @@ blueprint = Blueprint("dashboard", __name__)
 @login_required
 def create():
     """Create group route."""
+    name = request.form.get("name")
+    open_time = request.form.get("openhr")
+    close_time = request.form.get("closehr")
+    timezone = request.form.get("timezone")
+
+    if not name or not open_time or not close_time or not timezone:
+        # Information not provided
+        flash("Oops, looks like some fields are missing! Fill out everything to continue.")
+        return redirect("/")
+
+    # Make sure time is valid
+    open_time = time(*open_time.split(":"))
+    close_time = time(*close_time.split(":"))
+    if open_time > close_time:
+        # Open time is greater than close time
+        flash("Oops, it looks like your open time is later than your close time! Try reversing them.")
+        return redirect("/")
+
+    # Create unique ID
+    uid = str(uuid4())
+    while db.session.execute(
+            select(Group).where(Group.uid == uid)
+        ).fetchone():
+            # ID isn't unique, so generate new one
+            uid = str(uuid4())
+
+    # Create group in database
+    group = Group(
+        uid=uid,
+        name=name,
+        open_time=open_time,
+        close_time=close_time,
+        timezone=timezone,
+        creator_id=session["user_id"]
+    )
+    db.session.add(group)
+    db.session.commit()
 
     return redirect("/")
 
@@ -90,15 +129,31 @@ def join():
     return redirect("/")
 
 
-@blueprint.route("/send", methods=["POST"])
-def send():
-    """Send message route."""
+@socketio.on("load_chatroom")
+def load_chatroom(json):
     if not logged_in():
-        return jsonify({
-            "success": False,
-            "error": "Oops, it looks like you're not logged in yet!"
+        # User isn't logged in
+        socketio.emit("Error", {
+            "desc": "Oops, looks like you're not logged in yet!"
         })
+    socketio.emit("Success", {})
 
-    return jsonify({
-        "success": True
-    })
+
+@socketio.on("send")
+def send(json):
+    if not logged_in():
+        # User isn't logged in
+        socketio.emit("Error", {
+            "desc": "Oops, looks like you're not logged in yet!"
+        })
+    socketio.emit("Success", {})
+
+
+@socketio.on("receive")
+def receive(json):
+    if not logged_in():
+        # User isn't logged in
+        socketio.emit("Error", {
+            "desc": "Oops, looks like you're not logged in yet!"
+        })
+    socketio.emit("Success", {})

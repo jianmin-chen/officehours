@@ -51,3 +51,20 @@ p {
   font-family: "Bebas Neue", sans-serif;
   text-transform: uppercase;
 }
+
+body, html {
+  background-color: #f7f7f7;
+}
+
+.nav-tabs {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: -webkit-box;
+  display: -moz-box;
+}
+.nav-tabs a {
+  font-family: "Syne", sans-serif;
+}
+.nav-tabs > li {
+  float: none;
+}

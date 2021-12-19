@@ -1,1 +1,20 @@
 @import "base";
+
+body, html {
+    background-color: #f7f7f7;
+}
+
+.nav-tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: -webkit-box;
+    display: -moz-box;
+
+    a {
+        font-family: "Syne", sans-serif;
+    }
+
+    &> li {
+        float: none;
+    }
+}

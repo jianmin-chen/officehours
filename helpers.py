@@ -1,8 +1,11 @@
 from flask import flash, redirect, session
+from flask_socketio import SocketIO
 from functools import wraps
 from sqlalchemy import select
 
 from database import db, User
+
+socketio = SocketIO()
 
 
 def logged_in():

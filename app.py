@@ -1,11 +1,11 @@
 from flask import Flask
 from flask_mail import Mail
 from flask_session import Session
-from flask_socketio import SocketIO, emit
 from os import environ
 
 from database import db
-from routes import general
+from helpers import socketio
+from routes import dashboard, general
 
 # Configure application
 app = Flask(__name__)
@@ -22,6 +22,7 @@ def after_request(response):
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
     return response
+
 
 # Configure database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -43,7 +44,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure sockets
-socketio = SocketIO(app)
+socketio.init_app(app)
 
 # Configure custom variables
 app.config["AVATAR_FOLDER"] = "static/images/avatars"
@@ -51,7 +52,8 @@ app.config["DOMAIN_URL"] = "http://127.0.0.1:5000"
 app.config["GITHUB_LINK"] = "https://github.com/jianmin-chen/officehours"
 
 # Configure routes
+app.register_blueprint(dashboard.blueprint)
 app.register_blueprint(general.blueprint)
 
 if __name__ == "__main__":
-    socketio.run(app)
+    socketio.run(app, debug=True)
