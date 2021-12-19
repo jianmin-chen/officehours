@@ -138,19 +138,20 @@ def join():
 def load_chatroom(json):
     if not logged_in():
         # User isn't logged in
-        socketio.emit("Error", {
+        socketio.emit("error", {
             "desc": "Oops, looks like you're not logged in yet!"
         })
 
     group_id = json.get("group_id")
+    member_id = json.get("member_id")
 
-    if not group_id:
+    if not group_id or not member_id:
         # Information not provided
-        socketio.emit("Error", {
-            "desc": "Oops, looks like you're not logged in yet!"
+        socketio.emit("error", {
+            "desc": "Oops, looks like there was an error loading the chatroom!"
         })
 
-    socketio.emit("Success", {})
+    socketio.emit("chatroom_loaded", {"message": "Sucess! Great job..."})
 
 
 @socketio.on("send")

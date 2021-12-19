@@ -57,7 +57,7 @@
                                         <p class="text-muted">
                                             {% if group.members | length %}
                                                 {% for member in group.members[:2] %}
-                                                    {{ member.email }}
+                                                    {{ member.email }},
                                                 {% endfor %}
                                                 ...
                                             {% else %}
@@ -77,9 +77,9 @@
                                             <ul class="list-group list-group-flush">
                                                 {% for member in group.members %}
                                                     <li class="list-group-item">
-                                                        <a href="#">
-                                                            <img src="{{ url_for('static', filename=member.avatar) }}"/>
-                                                            {{ member.name }}
+                                                        <a href="javascript:void(0)" onclick="javascript:loadChatroom({{ group.id }}, {{ member.id }})">
+                                                            <img class="profile-image" src="{{ member.avatar }}"/>
+                                                            {{ member.email }}
                                                         </a>
                                                     </li>
                                                 {% endfor %}
@@ -98,6 +98,7 @@
                             <input autocomplete="off" class="form-control" name="code" placeholder="Join group by code..." required type="text"/>
                             <button class="btn btn-dark" type="submit">Join!</button>
                         </form>
+                        <hr/>
                         <ul class="list-group list-group-flush">
                             {% for group in part_of %}
                                 <li class="list-group-item">

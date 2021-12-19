@@ -1,3 +1,4 @@
+from datetime import datetime, time
 from flask import Blueprint, current_app, flash, redirect, render_template, request, session
 from flask_mail import Mail, Message
 from requests import get as get_avatar
@@ -37,6 +38,7 @@ def index():
             ).fetchall()
             for member in member_query:
                 members.append({
+                    "id": member[0].user.id,
                     "email": member[0].user.email,
                     "avatar": member[0].user.avatar
                 })
@@ -55,14 +57,23 @@ def index():
             )
         ).fetchall()
 
-        # Convert local timezone to compare to timezones in database
-
+        timenow = datetime.now(pytz.timezone("UTC"))
 
         for link in query:
+            # Convert local timezone to timezone in database to compare
+            updated_timenow = timenow.astimezone(pytz.timezone(link[0].group.timezone))
+            timeobj = time(int(updated_timenow.hour), int(updated_timenow.minute))
+            if link[0].group.open_time < timeobj < link[0].group.close_time:
+                # User can message creator of group
+                disabled = False
+            else:
+                disabled = True
+
             part_of.append({
                 "id": link[0].group_id,
                 "name": link[0].group.name,
-                "creator": link[0].group.creator.username
+                "creator": link[0].group.creator.username,
+                "disabled": disabled
             })
 
         return render_template("dashboard.html", timezones=pytz.common_timezones, in_charge=in_charge, part_of=part_of)
