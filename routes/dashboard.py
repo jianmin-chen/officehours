@@ -1,6 +1,7 @@
 from datetime import time
 from flask import Blueprint, current_app, flash, jsonify, redirect, render_template, request, session
-from flask_mail import Mail, Message
+from flask_mail import Mail
+from flask_mail import Message as Email
 from sqlalchemy import select
 from uuid import uuid4
 
@@ -26,8 +27,8 @@ def create():
         return redirect("/")
 
     # Make sure time is valid
-    open_time = time(*open_time.split(":"))
-    close_time = time(*close_time.split(":"))
+    open_time = time(*[int(i) for i in open_time.split(":")])
+    close_time = time(*[int(i) for i in close_time.split(":")])
     if open_time > close_time:
         # Open time is greater than close time
         flash("Oops, it looks like your open time is later than your close time! Try reversing them.")
@@ -70,7 +71,7 @@ def invite():
 
     group = db.session.execute(
         select(Group).where(
-            (Group.id == id) &
+            (Group.id == group_id) &
             (Group.creator_id == session["user_id"])
         )
     ).fetchone()
@@ -82,13 +83,17 @@ def invite():
 
     # Send invite code
     mail = Mail()
-    msg = Message(
+    msg = Email(
         subject="OfficeHours - Invite code",
         sender=current_app.config["MAIL_USERNAME"],
         recipients=[email]
     )
     msg.html = render_template(
         "invite.html",
+        email=group[0].creator.email,
+        openhr=group[0].open_time.strftime("%H:%M"),
+        closehr=group[0].close_time.strftime("%H:%M"),
+        timezone=group[0].timezone,
         code=group[0].uid
     )
     mail.send(msg)

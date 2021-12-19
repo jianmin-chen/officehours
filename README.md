@@ -37,7 +37,7 @@ At this point, OfficeHours is simply an MVP. There are so many more features tha
 
 * A better designed sign up/log in page and dashboard page
 * Direct invite links + extra security to ensure that only those who received a user's invite link can join
+* More CRUD functions that haven't been included, such as the ability to update a group's open and close hours
 * Rich text editing for messages
 * OAuth with Google and integration with the [Google Classroom API](https://classroom.google.com/) so teachers can directly add their students automatically instead of manually inviting students
 * Pricing for users that go above a certain amount of data
-

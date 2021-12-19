@@ -50,65 +50,46 @@
                         </form>
                         <hr/>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a data-bs-toggle="collapse" href="#group1">
-                                    <p>The Coding Club</p>
-                                    <p class="text-muted">153138@domain.org, 152432@domain.org</p>
-                                </a>
-                            </li>
-                            <div class="collapse" id="group1">
-                                <div class="px-sm-3 pt-3">
-                                    <form action="/invite" class="input-inline" method="post">
-                                        <input name="group_id" type="hidden" value=""/>
-                                        <input autocomplete="off" class="form-control" name="email" placeholder="Invite someone by email..." required type="email"/>
-                                        <button class="btn btn-dark" type="submit">Invite!</button>
-                                    </form>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <a data-bs-toggle="collapse">
-                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
-                                                153138@cspge.org
-                                            </a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <a data-bs-toggle="collapse">
-                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
-                                                153138@cspge.org
-                                            </a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <a data-bs-toggle="collapse">
-                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
-                                                153138@cspge.org
-                                            </a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <a data-bs-toggle="collapse">
-                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
-                                                153138@cspge.org
-                                            </a>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <a data-bs-toggle="collapse">
-                                                <img class="profile-image" src="https://avatars.dicebear.com/api/initials/Jianmin Chen.svg"/>
-                                                153138@cspge.org
-                                            </a>
-                                        </li>
-                                    </ul>
+                            {% for group in in_charge %}
+                                <li class="list-group-item">
+                                    <a data-bs-toggle="collapse" href="#incharge{{ group.id }}">
+                                        <p>{{ group.name}}</p>
+                                        <p class="text-muted">
+                                            {% if group.members | length %}
+                                                {% for member in group.members[:2] %}
+                                                    {{ member.email }}
+                                                {% endfor %}
+                                                ...
+                                            {% else %}
+                                                No group members so far. Go invite someone!
+                                            {% endif %}
+                                        </p>
+                                    </a>
+                                </li>
+                                <div class="collapse" id="incharge{{ group.id }}">
+                                    <div class="px-sm-3 pt-3">
+                                        <form action="/invite" class="input-inline" method="post">
+                                            <input name="group_id" type="hidden" value="{{ group.id }}"/>
+                                            <input autocomplete="off" class="form-control" name="email" placeholder="Invite someone by email..." required type="email"/>
+                                            <button class="btn btn-dark" type="submit">Invite!</button>
+                                        </form>
+                                        {% if group.members | length %}
+                                            <ul class="list-group list-group-flush">
+                                                {% for member in group.members %}
+                                                    <li class="list-group-item">
+                                                        <a href="#">
+                                                            <img src="{{ url_for('static', filename=member.avatar) }}"/>
+                                                            {{ member.name }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                                <li class="list-group-item"></li>
+                                            </ul>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
-                            <li class="list-group-item">
-                                <a href="#">
-                                    <p>AP English Department</p>
-                                    <p class="text-muted">arobert@gmail.com, ssarah@yahoo.com, tyehrig@gmail.com, ...</p>
-                                </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="#">
-                                    <p>Math Club</p>
-                                    <p class="text-muted">No group members so far. Go invite some!</p>
-                                </a>
-                            </li>
+                            {% endfor %}
+                            <li class="list-group-item"></li>
                         </ul>
                     </div>
                     <div class="tab-pane fade" id="part-of">
@@ -118,18 +99,15 @@
                             <button class="btn btn-dark" type="submit">Join!</button>
                         </form>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a data-bs-toggle="collapse">
-                                    <p>Teacher Faculty</p>
-                                    <p class="text-muted">led by adonatelli@aol.com</p>
-                                </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a data-bs-toggle="collapse">
-                                    <p>MCAS FAQs</p>
-                                    <p class="text-muted">led by showl@outlook.com</p>
-                                </a>
-                            </li>
+                            {% for group in part_of %}
+                                <li class="list-group-item">
+                                    <a href="#">
+                                        <p>{{ group.name }}</p>
+                                        <p class="text-muted">led by {{ group.creator }}</p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            <li class="list-group-item"></li>
                         </ul>
                     </div>
                 </div>
@@ -170,6 +148,17 @@
             </div>
         </div>
     </div>
+    {% if get_flashed_messages() %}
+        <div class="m-3 position-fixed bottom-0 end-0 show toast">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button class="btn-close" data-bs-dismiss="toast" type="button"></button>
+            </div>
+            <div class="toast-body">
+                {{ get_flashed_messages() | join(" ") }}
+            </div>
+        </div>
+    {% endif %}
 </div>
 <script src="{{ url_for('static', filename='scripts/app.js') }}"></script>
 {% endblock %}

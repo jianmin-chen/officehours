@@ -6,8 +6,9 @@ from uuid import uuid4
 from werkzeug.security import check_password_hash, generate_password_hash
 
 import os
+import pytz
 
-from database import db, User
+from database import db, User, Group, Member
 from helpers import logged_in, login_required
 
 # Configure blueprint
@@ -18,7 +19,53 @@ blueprint = Blueprint("general", __name__)
 def index():
     """Return main page or dashboard depending on whether user is logged in or not."""
     if logged_in():
-        return render_template("dashboard.html")
+        # Load groups user is in charge of
+        in_charge = []
+        query= db.session.execute(
+            select(Group).where(
+                Group.creator_id == session["user_id"]
+            ).order_by(Group.name)
+        ).fetchall()
+
+        for group in query:
+            # Load a few members in the group
+            members = []
+            member_query = db.session.execute(
+                select(Member).where(
+                    Member.group_id == group[0].id
+                )
+            ).fetchall()
+            for member in member_query:
+                members.append({
+                    "email": member[0].user.email,
+                    "avatar": member[0].user.avatar
+                })
+
+            in_charge.append({
+                "id": group[0].id,
+                "name": group[0].name,
+                "members": members
+            })
+
+        # Load groups user is a part of
+        part_of = []
+        query = db.session.execute(
+            select(Member).where(
+                Member.user_id == session["user_id"]
+            )
+        ).fetchall()
+
+        # Convert local timezone to compare to timezones in database
+
+
+        for link in query:
+            part_of.append({
+                "id": link[0].group_id,
+                "name": link[0].group.name,
+                "creator": link[0].group.creator.username
+            })
+
+        return render_template("dashboard.html", timezones=pytz.common_timezones, in_charge=in_charge, part_of=part_of)
 
     return render_template("index.html")
 
