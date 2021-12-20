@@ -60,7 +60,9 @@ def load_chatroom_as_creator(json):
         })
         return
 
+    id = query[0].group.id
     name = query[0].group.name
+    receiver_id = query[0].user.id
     receiver_email = query[0].user.email
 
     # Get messages
@@ -77,8 +79,10 @@ def load_chatroom_as_creator(json):
             "content": message[0].content
         })
 
-    socketio.emit("load_chatroom/success", {
+    socketio.emit(f"load_chatroom/{id}", {
         "name": name,
+        "id": id,
+        "receiver_id": receiver_id,
         "receiver_email": receiver_email,
         "messages": messages
     })
@@ -110,6 +114,7 @@ def load_chatroom_as_member(json):
         })
         return
 
+    id = query[0].group.id
     name = query[0].group.name
     creator_id = query[0].group.creator_id
     creator_email = query[0].group.creator.email
@@ -128,8 +133,10 @@ def load_chatroom_as_member(json):
             "content": message[0].content
         })
 
-    socketio.emit("load_chatroom/success", {
+    socketio.emit(f"load_chatroom/{id}", {
         "name": name,
+        "id": id,
+        "receiver_id": creator_id,
         "receiver_email": creator_email,
         "messages": messages
     })
@@ -142,18 +149,43 @@ def send(json):
     group_id = json.get("groupID")
     receiver_id = json.get("receiverID")
 
-    if not content or not group_id or not receiever_id:
+    if not content or not group_id or not receiver_id:
         # Information not provided
         socketio.emit("error", {
             "desc": "Oops, looks like there was an error sending your message!"
         })
         return
 
-    # Make sure group and receiver exist
+    # Make sure sender belongs in chatroom
     is_member = db.session.execute(
         select(Member).where(
             (Member.group_id == group_id) &
-            (Member.id == receiver_id)
+            (Member.user_id == session["user_id"])
+        )
+    ).fetchone()
+    is_creator = db.session.execute(
+        select(Group).where(
+            (Group.id == group_id) &
+            (Group.creator_id == session["user_id"])
+        )
+    ).fetchone()
+
+    if is_member:
+        email = is_member[0].user.email
+    elif is_creator:
+        email = is_creator[0].creator.email
+    else:
+        # Sender doesn't belong in chatroom/chatroom doesn't exist
+        socketio.emit("error", {
+            "desc": "Oops, looks like there was an error sending your message!"
+        })
+        return
+
+    # Make sure receiver belongs in chatroom
+    is_member = db.session.execute(
+        select(Member).where(
+            (Member.group_id == group_id) &
+            (Member.user_id == receiver_id)
         )
     ).fetchone()
     is_creator = db.session.execute(
@@ -163,12 +195,18 @@ def send(json):
         )
     ).fetchone()
 
-    if not is_member or not is_creator:
+    if is_member:
+        name = is_member[0].user.username
+    elif is_creator:
+        name = is_creator[0].creator.username
+    else:
+        # Receiver doesn't belong in chatroom
         socketio.emit("error", {
             "desc": "Oops, looks like there was an error sending your message!"
         })
         return
 
+    # Set message in database
     message = Message(
         content=content,
         group_id=group_id,
@@ -178,19 +216,13 @@ def send(json):
     db.session.add(message)
     db.session.commit()
 
-    # Schedule time for receiver to receive message during their office hours
-    def email():
-        mail = Mail()
-        msg = Email(
-            subject="OfficeHours - New message",
-            sender=current_app.config["EMAIL_USERNAME"],
-            recipients=[]
-        )
-        msg.html = render_template()
-        mail.send(msg)
+    # Send message
 
-    user = db.session.execute(
-        select(User).where(User.id == receiver_id)
-    ).fetchone()[0]
-
-    socketio.emit(f"receive/{group}", {})
+    socketio.emit(f"receive_new/{group_id}", {
+        "content": content,
+        "receiver_id": receiver_id
+    })
+    socketio.emit(f"receive_own/{group_id}", {
+        "content": content,
+        "receiver_id": receiver_id
+    })

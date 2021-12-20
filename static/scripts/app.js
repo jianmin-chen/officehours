@@ -31,8 +31,8 @@ window.onload = () => {
         document.getElementById("chatroom-title").innerText = group.name;
         document.getElementById("chatroom-receiver").innerText = group.receiver_email;
         document.getElementById("chatroom").innerHTML = "";
+        let bubble;
         for (let message of group.messages) {
-            let bubble;
             if (message.self) {
                 bubble = `
                 <div class="message self-message">
@@ -50,8 +50,34 @@ window.onload = () => {
         }
         document.getElementById("send-message").style.display = "block";
         document.getElementById("send-message").addEventListener("submit", function() {
+            event.stopImmediatePropagation();
+            event.stopPropagation();
             event.preventDefault();
-            alert(this.elements.message.value);
+            socket.emit("send", {
+                content: this.elements.message.value,
+                groupID: group.id,
+                receiverID: group.receiver_id
+            });
+        });
+        socket.on(`receive_new/${group.id}`, (message) => {
+            if (message.receiver_id != group.receiver_id) {
+                bubble = `
+                <div class="message others-message">
+                    <div class="message-content">${message.content}</div>
+                </div>
+                `;
+                document.getElementById("chatroom").insertAdjacentHTML("beforeend", bubble);
+            }
+        });
+        socket.on(`receive_own/${group.id}`, (message) => {
+            if (message.receiver_id == group.receiver_id) {
+                bubble = `
+                <div class="message self-message">
+                    <div class="message-content">${message.content}</div>
+                </div>
+                `;
+                document.getElementById("chatroom").insertAdjacentHTML("beforeend", bubble);
+            }
         });
     });
 };

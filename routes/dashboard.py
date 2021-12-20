@@ -65,6 +65,10 @@ def invite():
         # Group doesn't exist/user isn't authorized to send invite emails
         flash("Oops, looks like there was an error sending an invite email! Try again.")
         return redirect("/")
+    elif group[0].creator.email == email:
+        # User cannot send invitation to themselves
+        flash("Oops, you can't send an invitation to yourself!")
+        return redirect("/")
 
     # Send invite code
     mail = Mail()
