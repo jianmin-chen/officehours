@@ -1,10 +1,10 @@
 from flask import Blueprint, current_app, flash, redirect, render_template, request, session
 from flask_mail import Mail
-from flask_mail import Message as Email
+from flask_mail import Message
 from sqlalchemy import select
 from uuid import uuid4
 
-from database import db, User, Group, Member, Message
+from database import db, User, Group, Member
 from helpers import logged_in, login_required
 
 # Configure blueprint
@@ -68,7 +68,7 @@ def invite():
 
     # Send invite code
     mail = Mail()
-    msg = Email(
+    msg = Message(
         subject="OfficeHours - Invite code",
         sender=current_app.config["MAIL_USERNAME"],
         recipients=[email]

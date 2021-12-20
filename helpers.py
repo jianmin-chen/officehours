@@ -1,10 +1,12 @@
 from flask import flash, redirect, session
+from flask_apscheduler import APScheduler
 from flask_socketio import SocketIO
 from functools import wraps
 from sqlalchemy import select
 
 from database import db, User
 
+scheduler = APScheduler()
 socketio = SocketIO()
 
 

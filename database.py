@@ -19,7 +19,6 @@ class User(db.Model):
 
     in_charge = db.relationship("Group", back_populates="creator")
     part_of = db.relationship("Member", back_populates="user")
-    messages = db.relationship("Message", back_populates="user")
 
 class Group(db.Model):
     __tablename__ = "groups"
@@ -31,7 +30,6 @@ class Group(db.Model):
     creator = db.relationship("User", back_populates="in_charge")
     members = db.relationship("Member", back_populates="group")
     messages = db.relationship("Message", back_populates="group")
-
 
 class Member(db.Model):
     __tablename__ = "members"
@@ -46,9 +44,11 @@ class Message(db.Model):
     __tablename__ = "messages"
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String, nullable=False)
-    public = db.Column(db.Boolean, default=False, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow(), nullable=False)
     group_id = db.Column(db.Integer, db.ForeignKey("groups.id"), nullable=False)
     sender_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    receiver_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
     group = db.relationship("Group", back_populates="messages")
-    user = db.relationship("User", back_populates="messages")
+    sender = db.relationship("User", foreign_keys=[sender_id])
+    receiver = db.relationship("User", foreign_keys=[receiver_id])

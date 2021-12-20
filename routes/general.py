@@ -61,7 +61,8 @@ def index():
             part_of.append({
                 "id": link[0].group_id,
                 "name": link[0].group.name,
-                "creator": link[0].group.creator.email
+                "creator": link[0].group.creator.email,
+                "creator_id": link[0].group.creator.id
             })
 
         return render_template("dashboard.html", in_charge=in_charge, part_of=part_of)
@@ -220,5 +221,5 @@ def verify():
     db.session.add(user[0])
     db.session.commit()
 
-    flash("Great! Your email has been verfied and you're set to start using OfficeHours.")
+    flash("Great! Your email has been verified and you're set to start using OfficeHours.")
     return redirect("/")

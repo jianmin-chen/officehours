@@ -4,7 +4,7 @@ from flask_session import Session
 from os import environ
 
 from database import db
-from helpers import socketio
+from helpers import scheduler, socketio
 from routes import dashboard, general, sockets
 
 # Configure application
@@ -29,6 +29,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
+# Configure session
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
 # Configure email
 app.config["MAIL_USERNAME"] = environ.get("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = environ.get("MAIL_PASSWORD")
@@ -38,10 +43,10 @@ app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
 mail = Mail(app)
 
-# Configure session
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+# Configure scheduler
+app.config["SCHEDULER_API_ENABLED"] = False
+scheduler.init_app(app)
+scheduler.start()
 
 # Configure sockets
 socketio.init_app(app)

@@ -58,6 +58,29 @@ h1, h2 h3, h4, h5, h6 {
     }
 }
 
+.input-inline {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
+
+.profile-image {
+    /* Set up styles for profile images */
+    border-radius: 50%;
+    vertical-align: bottom;
+    width: 25px;
+}
+
 #chatroom {
     height: 100%;
 
@@ -84,25 +107,6 @@ h1, h2 h3, h4, h5, h6 {
     }
 }
 
-.input-inline {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-
-    button {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-
-    input {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-}
-
-.profile-image {
-    /* Set up styles for profile images */
-    border-radius: 50%;
-    vertical-align: bottom;
-    width: 25px;
+#send-message {
+    display: none;
 }
