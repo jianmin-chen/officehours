@@ -7,8 +7,10 @@ const loadChatroomAsCreator = (groupID, memberID) => {
     });
 };
 
-const loadChatroomAsMember = (groupID, creatorID) => {
-    alert(groupID);
+const loadChatroomAsMember = (groupID) => {
+    socket.emit("load_chatroom/member", {
+        groupID: groupID
+    });
 };
 
 window.onload = () => {

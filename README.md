@@ -10,7 +10,7 @@ As a student, I've heard a lot of teachers, especially during remote learning, c
 
 ## What it does
 
-It's as simple as it sounds: office hours for inboxes. Users can choose a time, and people will only be able to message them during this time. OfficeHour will notify the user if anybody messages them during these hours. The more important thing is that it's divided into groups, so users will also be able to send out public service announcements to everyone in a group while also privately chatting with each person in the group: the organization has already been done for them! And because it utilizes the concept of office hours, users won't need to worry about catching up to unread emails when they're not at work or when they aren't available on OfficeHours.
+It's as simple as it sounds: office hours for inboxes. Users can choose a time, and people will only be able to message them during this time. OfficeHour will notify the user if anybody messages them during these hours. The more important thing is that it's divided into groups, so the organization has already been done for them! And because it utilizes the concept of office hours, users won't need to worry about catching up to unread emails when they're not at work or when they aren't available on OfficeHours.
 
 ## How I built it
 
@@ -35,6 +35,7 @@ Overall, I'm proud of what I was able to create during my first hackathon. I lea
 
 At this point, OfficeHours is simply an MVP. There are so many more features that could be added to it in order to make it more usable. By features, I don't mean making it more complicated. That only causes problems. Rather, here are some of the features I would consider adding:
 
+* Public announcements to everyone in a group
 * A better designed sign up/log in page and dashboard page
 * Direct invite links + extra security to ensure that only those who received a user's invite link can join
 * More CRUD functions that haven't been included, such as the ability to update a group's open and close hours

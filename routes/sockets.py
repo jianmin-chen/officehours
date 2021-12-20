@@ -1,4 +1,4 @@
-from flask import Blueprint, current_app, session
+from flask import Blueprint, current_app, render_template, session
 from flask_mail import Mail
 from flask_mail import Message as Email
 from functools import wraps
@@ -36,7 +36,7 @@ def load_chatroom_as_creator(json):
     if not group_id or not member_id:
         # Information not provided
         socketio.emit("error", {
-            "desc": "Oops, looks like there was an error loading your chatroom!"
+            "desc": "Oops, looks like there wasan error loading your chatroom!"
         })
         return
 
@@ -85,8 +85,54 @@ def load_chatroom_as_creator(json):
 
 
 @socketio.on("load_chatroom/member")
+@login_required
 def load_chatroom_as_member(json):
-    socketio.emit("load_chatroom")
+    group_id = json.get("groupID")
+
+    if not group_id:
+        # Information not provided
+        socketio.emit("error", {
+            "desc": "Oops, looks like there was an error loading that chatroom!"
+        })
+        return
+
+    query = db.session.execute(
+        select(Member).where(
+            (Member.group_id == group_id) &
+            (Member.user_id == session["user_id"])
+        )
+    ).fetchone()
+
+    if not query:
+        # Member is not part of group
+        socketio.emit("error", {
+            "error": "Oops, looks like there was an error loading your chatroom!",
+        })
+        return
+
+    name = query[0].group.name
+    creator_id = query[0].group.creator_id
+    creator_email = query[0].group.creator.email
+
+    # Get messages
+    messages = []
+    query = db.session.execute(
+        select(Message).where(
+            (Message.group_id == group_id) &
+            (((Message.sender_id == session["user_id"]) & (Message.receiver_id == creator_id)) | ((Message.sender_id == creator_id) & (Message.receiver_id == session["user_id"])))
+        ).order_by(Message.date.asc())
+    ).fetchall()
+    for message in query:
+        messages.append({
+            "self": message[0].sender_id == session["user_id"],
+            "content": message[0].content
+        })
+
+    socketio.emit("load_chatroom/success", {
+        "name": name,
+        "receiver_email": creator_email,
+        "messages": messages
+    })
 
 
 @socketio.on("send")
@@ -104,14 +150,20 @@ def send(json):
         return
 
     # Make sure group and receiver exist
-    query = db.session.execute(
+    is_member = db.session.execute(
         select(Member).where(
             (Member.group_id == group_id) &
-            (Member.id == member_id)
+            (Member.id == receiver_id)
+        )
+    ).fetchone()
+    is_creator = db.session.execute(
+        select(Group).where(
+            (Group.id == group_id) &
+            (Group.creator_id == receiver_id)
         )
     ).fetchone()
 
-    if not query:
+    if not is_member or not is_creator:
         socketio.emit("error", {
             "desc": "Oops, looks like there was an error sending your message!"
         })
@@ -121,7 +173,7 @@ def send(json):
         content=content,
         group_id=group_id,
         sender_id=session["user_id"],
-        receiver_id=session["receiver_id"]
+        receiver_id=receiver_id
     )
     db.session.add(message)
     db.session.commit()
@@ -129,10 +181,16 @@ def send(json):
     # Schedule time for receiver to receive message during their office hours
     def email():
         mail = Mail()
-        message = Email(
+        msg = Email(
             subject="OfficeHours - New message",
             sender=current_app.config["EMAIL_USERNAME"],
             recipients=[]
         )
+        msg.html = render_template()
+        mail.send(msg)
 
-    socketio.emit(f"receive/{grou}", {})
+    user = db.session.execute(
+        select(User).where(User.id == receiver_id)
+    ).fetchone()[0]
+
+    socketio.emit(f"receive/{group}", {})

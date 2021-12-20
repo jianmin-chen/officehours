@@ -87,7 +87,7 @@
                         <ul class="list-group list-group-flush">
                             {% for group in part_of %}
                                 <li class="list-group-item">
-                                    <a onclick="loadChatroomAsMember({{ group.id }}, {{ group.creator_id }})" href="javascript:void(0)">
+                                    <a onclick="loadChatroomAsMember({{ group.id }})" href="javascript:void(0)">
                                         <p>{{ group.name }}</p>
                                         <p class="text-muted">led by {{ group.creator }}</p>
                                     </a>
