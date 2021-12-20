@@ -31,21 +31,6 @@
                         <p>I'm in charge of...</p>
                         <form action="/create" method="post">
                             <input autocomplete="off" class="form-control mb-1" name="name" placeholder="Name of group..." required type="text"/>
-                            <div class="gx-1 mb-2 row">
-                                <div class="col-6 col-lg-4 mb-2 mb-lg-0">
-                                    <input class="form-control" name="openhr" required type="time" value="12:00"/>
-                                </div>
-                                <div class="col-6 col-lg-4">
-                                    <input class="form-control" name="closehr" required type="time" value="13:00"/>
-                                </div>
-                                <div class="col-lg-4">
-                                    <select class="form-select" name="timezone">
-                                        <option disabled selected value="">Timezone</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
-                                </div>
-                            </div>
                             <button class="btn btn-dark d-block w-100" type="submit">Create!</button>
                         </form>
                         <hr/>

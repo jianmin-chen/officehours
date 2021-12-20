@@ -5,7 +5,7 @@ from os import environ
 
 from database import db
 from helpers import socketio
-from routes import dashboard, general
+from routes import dashboard, general, sockets
 
 # Configure application
 app = Flask(__name__)
@@ -54,6 +54,7 @@ app.config["GITHUB_LINK"] = "https://github.com/jianmin-chen/officehours"
 # Configure routes
 app.register_blueprint(dashboard.blueprint)
 app.register_blueprint(general.blueprint)
+app.register_blueprint(sockets.blueprint)
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)

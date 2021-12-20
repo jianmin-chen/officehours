@@ -57,26 +57,14 @@ def index():
             )
         ).fetchall()
 
-        timenow = datetime.now(pytz.timezone("UTC"))
-
         for link in query:
-            # Convert local timezone to timezone in database to compare
-            updated_timenow = timenow.astimezone(pytz.timezone(link[0].group.timezone))
-            timeobj = time(int(updated_timenow.hour), int(updated_timenow.minute))
-            if link[0].group.open_time < timeobj < link[0].group.close_time:
-                # User can message creator of group
-                disabled = False
-            else:
-                disabled = True
-
             part_of.append({
                 "id": link[0].group_id,
                 "name": link[0].group.name,
-                "creator": link[0].group.creator.username,
-                "disabled": disabled
+                "creator": link[0].group.creator.email
             })
 
-        return render_template("dashboard.html", timezones=pytz.common_timezones, in_charge=in_charge, part_of=part_of)
+        return render_template("dashboard.html", in_charge=in_charge, part_of=part_of)
 
     return render_template("index.html")
 
@@ -84,7 +72,7 @@ def index():
 @blueprint.route("/account")
 def account():
     """Return signup/login page."""
-    return render_template("account.html")
+    return render_template("account.html", timezones=pytz.common_timezones)
 
 
 @blueprint.route("/signup", methods=["POST"])
@@ -93,11 +81,22 @@ def signup():
     username = request.form.get("username")
     email = request.form.get("email")
     password = request.form.get("password")
+    open_time = request.form.get("open_time")
+    close_time = request.form.get("close_time")
+    timezone = request.form.get("timezone")
 
-    if not username or not email or not password:
+    if not username or not email or not password or not open_time or not close_time or not timezone:
         # Information not provided
         flash("Oops, looks like some fields are missing! Fill out everything to continue.")
         return redirect("/account")
+
+    # Make sure time is valid
+    open_time = time(*[int(i) for i in open_time.split(":")])
+    close_time = time(*[int(i) for i in close_time.split(":")])
+    if open_time > close_time:
+        # Open time is greater than close time
+        flash("Oops, it looks like your open time is later than your close time! Try reversing them.")
+        return redirect("/")
 
     # Create avatar for user
     avatar_data = get_avatar(f"https://avatars.dicebear.com/api/initials/{username}.svg").content
@@ -120,6 +119,9 @@ def signup():
         email=email,
         password=generate_password_hash(password),
         avatar=avatar_filename.replace("\\", "/"),
+        open_time=open_time,
+        close_time=close_time,
+        timezone=timezone,
         token=str(uuid4())
     )
 

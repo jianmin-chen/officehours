@@ -37,6 +37,22 @@
                                     <label for="password">Password</label>
                                 </div>
                             </div>
+                            <div class="gx-1 mb-2 mb-lg-3 row">
+                                <div class="col-6 col-lg-4 mb-2 mb-lg-0">
+                                    <input class="form-control" name="open_time" required type="time" value="12:00"/>
+                                </div>
+                                <div class="col-6 col-lg-4">
+                                    <input class="form-control" name="close_time" required type="time" value="13:00"/>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select class="form-select" name="timezone">
+                                        <option disabled selected value="">Timezone</option>
+                                        {% for tz in timezones %}
+                                            <option value="{{ tz }}">{{ tz }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
                             <button class="btn btn-dark d-block w-100" type="submit">Sign Up</button>
                         </form>
                     </div>

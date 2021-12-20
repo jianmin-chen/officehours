@@ -1,9 +1,9 @@
 let socket;
 
-const loadChatroom = (groupID, memberID) => {
+const loadChatroom = (groupID, memberIDe) => {
     socket.emit("load_chatroom", {
         groupID: groupID,
-        memberID: memberID
+        memberID: memberID,
     });
 
     socket.on("chatroom_loaded", (messages) => {
