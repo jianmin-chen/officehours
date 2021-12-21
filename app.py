@@ -60,6 +60,3 @@ app.config["GITHUB_LINK"] = "https://github.com/jianmin-chen/officehours"
 app.register_blueprint(dashboard.blueprint)
 app.register_blueprint(general.blueprint)
 app.register_blueprint(sockets.blueprint)
-
-if __name__ == "__main__":
-    socketio.run(app, port=5000)
