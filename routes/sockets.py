@@ -1,5 +1,5 @@
 from datetime import date, datetime, time, timedelta
-from flask import Blueprint, current_app, render_template, session
+from flask import Blueprint, Flask, current_app, render_template, session
 from flask_mail import Mail
 from flask_mail import Message as Email
 from functools import wraps
@@ -28,6 +28,12 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return decorate
+
+
+def email(msg, app):
+    with app.app_context():
+        mail = Mail()
+        mail.send(msg)
 
 
 @socketio.on("load_chatroom/creator")
@@ -232,21 +238,19 @@ def send(json):
     db.session.commit()
 
     # Send message
-    def email():
-        mail = Mail()
-        msg = Email(
-            subject="OfficeHours - New message",
-            sender=current_app.config["MAIL_USERNAME"],
-            recipients=[receiver_email]
-        )
-        msg.html = render_template(
-            "message.html",
-            name=receiver_name,
-            email=sender_email,
-            group_name=group_name,
-            message=content
-        )
-        mail.send(msg)
+    msg = Email(
+        subject="OfficeHours - New message",
+        sender=current_app.config["MAIL_USERNAME"],
+        recipients=[receiver_email]
+    )
+    msg.html = render_template(
+        "message.html",
+        name=receiver_name,
+        email=sender_email,
+        group_name=group_name,
+        message=content
+    )
+
     timenow = datetime.now().astimezone(pytz_timezone(timezone))
     timeobj = time(int(timenow.hour), int(timenow.minute))
     if open_time < timeobj < close_time:
@@ -254,21 +258,25 @@ def send(json):
         email()
     elif timeobj < open_time:
         # Send notification later today
-        scheduler.add_job(
-            email,
-            "date",
-            id=str(uuid4()),
-            run_date=datetime(timenow.year, timenow.month, timenow.day, timenow.hour, timenow.minute)
-        )
-        print(scheduler.run_date)
+        with current_app.app_context():
+            scheduler.add_job(
+                id=str(uuid4()),
+                func=email,
+                trigger="date",
+                run_date=datetime(timenow.year, timenow.month, timenow.day, open_time.hour, open_time.minute),
+                args=[msg, scheduler.app]
+            )
     else:
         # Send notification tomorrow
         timenow = date.today() + timedelta(days=1)
-        scheduler.add_job(
-            email,
-            "date",
-            run_date=datetime(timenow.year, timenow.month, timenow.year, timenow.hour, timenow.minute)
-        )
+        with current_app.app_context():
+            scheduler.add_job(
+                id=str(uuid4()),
+                func=email,
+                trigger="date",
+                run_date=datetime(timenow.year, timenow.month, timenow.day, open_time.hour, close_time.minute),
+                args=[msg, scheduler.app]
+            )
 
     socketio.emit(f"message_sent/{group_id}/{session['user_id']}/{receiver_id}", {
         "content": content,
