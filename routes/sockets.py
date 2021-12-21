@@ -60,7 +60,6 @@ def load_chatroom_as_creator(json):
         })
         return
 
-    id = query[0].group.id
     name = query[0].group.name
     receiver_id = query[0].user.id
     receiver_email = query[0].user.email
@@ -79,9 +78,9 @@ def load_chatroom_as_creator(json):
             "content": message[0].content
         })
 
-    socketio.emit(f"load_chatroom/{id}", {
+    socketio.emit(f"load_chatroom/{session['user_id']}/{group_id}", {
         "name": name,
-        "id": id,
+        "id": group_id,
         "receiver_id": receiver_id,
         "receiver_email": receiver_email,
         "messages": messages
@@ -114,7 +113,6 @@ def load_chatroom_as_member(json):
         })
         return
 
-    id = query[0].group.id
     name = query[0].group.name
     creator_id = query[0].group.creator_id
     creator_email = query[0].group.creator.email
@@ -133,9 +131,9 @@ def load_chatroom_as_member(json):
             "content": message[0].content
         })
 
-    socketio.emit(f"load_chatroom/{id}", {
+    socketio.emit(f"load_chatroom/{session['user_id']}/{group_id}", {
         "name": name,
-        "id": id,
+        "id": group_id,
         "receiver_id": creator_id,
         "receiver_email": creator_email,
         "messages": messages
@@ -218,11 +216,11 @@ def send(json):
 
     # Send message
 
-    socketio.emit(f"receive_new/{group_id}", {
+    socketio.emit(f"message_sent/{session['user_id']}/{receiver_id}", {
         "content": content,
         "receiver_id": receiver_id
     })
-    socketio.emit(f"receive_own/{group_id}", {
+    socketio.emit(f"receive_new/{session['user_id']}/{receiver_id}", {
         "content": content,
         "receiver_id": receiver_id
     })

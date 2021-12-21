@@ -62,7 +62,7 @@
                                             <ul class="list-group list-group-flush">
                                                 {% for member in group.members %}
                                                     <li class="list-group-item">
-                                                        <a href="javascript:void(0)" onclick="javascript:loadChatroomAsCreator({{ group.id }}, {{ member.id }})">
+                                                        <a href="javascript:void(0)" onclick="javascript:loadChatroomAsCreator({{ group.id }}, {{ member.id }}, {{ user_id }})">
                                                             <img class="profile-image" src="{{ member.avatar }}"/>
                                                             {{ member.email }}
                                                         </a>
@@ -87,7 +87,7 @@
                         <ul class="list-group list-group-flush">
                             {% for group in part_of %}
                                 <li class="list-group-item">
-                                    <a onclick="loadChatroomAsMember({{ group.id }})" href="javascript:void(0)">
+                                    <a onclick="loadChatroomAsMember({{ group.id }}, {{ group.creator_id }}, {{ user_id }})" href="javascript:void(0)">
                                         <p>{{ group.name }}</p>
                                         <p class="text-muted">led by {{ group.creator }}</p>
                                     </a>
@@ -113,7 +113,7 @@
             </div>
         </div>
     </div>
-    <div class="m-3 position-fixed bottom-0 end-0 toast-container">
+    <div class="m-1 m-sm-3 position-fixed bottom-0 end-0 toast-container">
         {% if get_flashed_messages() %}
             <div class="show toast">
                 <div class="toast-header">

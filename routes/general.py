@@ -65,7 +65,7 @@ def index():
                 "creator_id": link[0].group.creator.id
             })
 
-        return render_template("dashboard.html", in_charge=in_charge, part_of=part_of)
+        return render_template("dashboard.html", user_id=session["user_id"], in_charge=in_charge, part_of=part_of)
 
     return render_template("index.html")
 
