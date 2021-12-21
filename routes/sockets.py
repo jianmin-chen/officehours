@@ -1,8 +1,11 @@
+from datetime import date, datetime, time, timedelta
 from flask import Blueprint, current_app, render_template, session
 from flask_mail import Mail
 from flask_mail import Message as Email
 from functools import wraps
+from pytz import timezone as pytz_timezone
 from sqlalchemy import select
+from uuid import uuid4
 
 from database import db, User, Group, Member, Message
 from helpers import scheduler, socketio, logged_in
@@ -63,6 +66,7 @@ def load_chatroom_as_creator(json):
     name = query[0].group.name
     receiver_id = query[0].user.id
     receiver_email = query[0].user.email
+    receiver_time = f"{query[0].user.open_time.strftime('%H:%M')} - {query[0].user.close_time.strftime('%H:%M')} {query[0].user.timezone}"
 
     # Get messages
     messages = []
@@ -83,6 +87,7 @@ def load_chatroom_as_creator(json):
         "id": group_id,
         "receiver_id": receiver_id,
         "receiver_email": receiver_email,
+        "receiver_time": receiver_time,
         "messages": messages
     })
 
@@ -116,6 +121,7 @@ def load_chatroom_as_member(json):
     name = query[0].group.name
     creator_id = query[0].group.creator_id
     creator_email = query[0].group.creator.email
+    creator_time = f"{query[0].group.creator.open_time.strftime('%H:%M')} - {query[0].group.creator.close_time.strftime('%H:%M')} {query[0].group.creator.timezone}"
 
     # Get messages
     messages = []
@@ -136,6 +142,7 @@ def load_chatroom_as_member(json):
         "id": group_id,
         "receiver_id": creator_id,
         "receiver_email": creator_email,
+        "receiver_time": creator_time,
         "messages": messages
     })
 
@@ -197,10 +204,16 @@ def send(json):
         receiver_name = is_member[0].user.username
         receiver_email = is_member[0].user.email
         group_name = is_member[0].group.name
+        open_time = is_member[0].user.open_time
+        close_time = is_member[0].user.close_time
+        timezone = is_member[0].user.timezone
     elif is_creator:
         receiver_name = is_creator[0].creator.username
-        receiver_name = is_creator[0].creator.email
+        receiver_email = is_creator[0].creator.email
         group_name = is_creator[0].name
+        open_time = is_creator[0].creator.open_time
+        close_time = is_creator[0].creator.close_time
+        timezone = is_creator[0].creator.timezone
     else:
         # Receiver doesn't belong in chatroom
         socketio.emit("error", {
@@ -229,12 +242,33 @@ def send(json):
         msg.html = render_template(
             "message.html",
             name=receiver_name,
-            email=receiver_email,
+            email=sender_email,
             group_name=group_name,
             message=content
         )
         mail.send(msg)
-    email()
+    timenow = datetime.now().astimezone(pytz_timezone(timezone))
+    timeobj = time(int(timenow.hour), int(timenow.minute))
+    if open_time < timeobj < close_time:
+        # Send notification now
+        email()
+    elif timeobj < open_time:
+        # Send notification later today
+        scheduler.add_job(
+            email,
+            "date",
+            id=str(uuid4()),
+            run_date=datetime(timenow.year, timenow.month, timenow.day, timenow.hour, timenow.minute)
+        )
+        print(scheduler.run_date)
+    else:
+        # Send notification tomorrow
+        timenow = date.today() + timedelta(days=1)
+        scheduler.add_job(
+            email,
+            "date",
+            run_date=datetime(timenow.year, timenow.month, timenow.year, timenow.hour, timenow.minute)
+        )
 
     socketio.emit(f"message_sent/{group_id}/{session['user_id']}/{receiver_id}", {
         "content": content,

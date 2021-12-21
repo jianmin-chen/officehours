@@ -28,12 +28,12 @@ const sendMessage = function() {
     event.stopImmediatePropagation();
     event.stopPropagation();
     event.preventDefault();
+    document.getElementById("send-message").value = "";
     socket.emit("send", {
         content: this.elements.message.value,
         groupID: globalGroupID,
         receiverID: globalReceiverID
     });
-    this.value = "";
     socket.off(`message_sent/${globalGroupID}/${globalUserID}/${globalReceiverID}`);
     socket.off(`receive_new/${globalGroupID}/${globalReceiverID}/${globalUserID}`);
     socket.on(`message_sent/${globalGroupID}/${globalUserID}/${globalReceiverID}`, (message) => {
@@ -62,7 +62,7 @@ const loadChatroomAsCreator = (groupID, memberID, userID) => {
     });
     socket.on(`load_chatroom/${userID}/${groupID}`, (group) => {
         document.getElementById("chatroom-title").innerText = group.name;
-        document.getElementById("chatroom-receiver").innerText = group.receiver_email;
+        document.getElementById("chatroom-receiver").innerText = `${group.receiver_email}: ${group.receiver_time}`;
         document.getElementById("chatroom").innerHTML = "";
         let bubble;
         for (let message of group.messages) {
@@ -105,7 +105,7 @@ const loadChatroomAsMember = (groupID, creatorID, userID) => {
     });
     socket.on(`load_chatroom/${userID}/${groupID}`, (group) => {
         document.getElementById("chatroom-title").innerText = group.name;
-        document.getElementById("chatroom-receiver").innerText = group.receiver_email;
+        document.getElementById("chatroom-receiver").innerText = `${group.receiver_email}: ${group.receiver_time}`;
         document.getElementById("chatroom").innerHTML = "";
         let bubble;
         for (let message of group.messages) {

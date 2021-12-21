@@ -53,7 +53,7 @@ socketio.init_app(app)
 
 # Configure custom variables
 app.config["AVATAR_FOLDER"] = "static/images/avatars"
-app.config["DOMAIN_URL"] = "http://127.0.0.1:5000"
+app.config["DOMAIN_URL"] = "http://192.168.1.126:5000"
 app.config["GITHUB_LINK"] = "https://github.com/jianmin-chen/officehours"
 
 # Configure routes
