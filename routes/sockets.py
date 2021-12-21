@@ -255,7 +255,7 @@ def send(json):
     timeobj = time(int(timenow.hour), int(timenow.minute))
     if open_time < timeobj < close_time:
         # Send notification now
-        email()
+        email(msg, current_app)
     elif timeobj < open_time:
         # Send notification later today
         with current_app.app_context():

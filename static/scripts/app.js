@@ -143,7 +143,7 @@ window.onload = () => {
     if (location.protocol !== 'https:') {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);
     }
-    socket = io.connect(`https://${document.domain}:${location.port}/`);
+    socket = io.connect(`${location.protocol}//${document.domain}:${location.port}/`);
     socket.on("error", (err) => {
         let toast = `
         <div class="toast show" id="js-toast">
