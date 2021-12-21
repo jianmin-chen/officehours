@@ -140,7 +140,7 @@ const loadChatroomAsMember = (groupID, creatorID, userID) => {
 };
 
 window.onload = () => {
-    socket = io.connect(`http://${document.domain}:${location.port}/`);
+    socket = io.connect(`https://${document.domain}:${location.port}/`);
     socket.on("error", (err) => {
         let toast = `
         <div class="toast show" id="js-toast">
