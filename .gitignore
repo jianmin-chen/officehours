@@ -1,7 +1,6 @@
-/__pycache__
-/env
-/flask_session
-/*/__pycache__
-/static/images/avatars/
+/env/
+/flask_session/
+/**/__pycache__/
+/**/avatars/
 database.db
 info.txt
