@@ -1,1 +1,1 @@
-web: gunicorn — worker-class eventlet -w 1 module:app
+web: gunicorn -k flask_sockets.worker chat:app
