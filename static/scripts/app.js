@@ -1,6 +1,61 @@
-let socket;
+let socket, globalGroupID, globalUserID, globalReceiverID;
+
+const createSelfBubble = (content) => {
+    let div = document.createElement("div");
+    div.classList.add("message", "self-message");
+
+    let innerMessage = document.createElement("message-content");
+    innerMessage.classList.add("message-content");
+    innerMessage.innerText = content;
+
+    div.appendChild(innerMessage);
+    return div;
+}
+
+const createOthersBubble = (content) => {
+    let div = document.createElement("div");
+    div.classList.add("message", "others-message");
+
+    let innerMessage = document.createElement("message-content");
+    innerMessage.classList.add("message-content");
+    innerMessage.innerText = content;
+
+    div.appendChild(innerMessage);
+    return div;
+}
+
+const sendMessage = function() {
+    event.stopImmediatePropagation();
+    event.stopPropagation();
+    event.preventDefault();
+    socket.emit("send", {
+        content: this.elements.message.value,
+        groupID: globalGroupID,
+        receiverID: globalReceiverID
+    });
+    this.value = "";
+    socket.off(`message_sent/${globalGroupID}/${globalUserID}/${globalReceiverID}`);
+    socket.off(`receive_new/${globalGroupID}/${globalReceiverID}/${globalUserID}`);
+    socket.on(`message_sent/${globalGroupID}/${globalUserID}/${globalReceiverID}`, (message) => {
+        document.getElementById("chatroom").appendChild(createSelfBubble(message.content));
+        document.getElementById("send-message").scrollIntoView({
+            behavior: "smooth",
+            block: "end"
+        });
+    });
+    socket.on(`receive_new/${globalGroupID}/${globalReceiverID}/${globalUserID}`, (message) => {
+        document.getElementById("chatroom").appendChild(createOthersBubble(message.content));
+        document.getElementById("send-message").scrollIntoView({
+            behavior: "smooth",
+            block: "end"
+        });
+    });
+}
 
 const loadChatroomAsCreator = (groupID, memberID, userID) => {
+    socket.off(`message_sent/${globalGroupID}/${globalUserID}/${globalReceiverID}`);
+    socket.off(`receive_new/${globalGroupID}/${globalReceiverID}/${globalUserID}`);
+    globalGroupID = groupID, globalUserID = userID, globalReceiverID = memberID;
     socket.emit("load_chatroom/creator", {
         groupID: groupID,
         memberID: memberID
@@ -12,54 +67,39 @@ const loadChatroomAsCreator = (groupID, memberID, userID) => {
         let bubble;
         for (let message of group.messages) {
             if (message.self) {
-                bubble = `
-                <div class="message self-message">
-                    <div class="message-content">${message.content}</div>
-                </div>
-                `;
+                bubble = createSelfBubble(message.content);
             } else {
-                bubble = `
-                <div class="message others-message">
-                    <div class="message-content">${message.content}</div>
-                </div>
-                `;
+                bubble = createOthersBubble(message.content);
             }
-            document.getElementById("chatroom").insertAdjacentHTML("beforeend", bubble);
+            document.getElementById("chatroom").appendChild(bubble);
         }
         document.getElementById("send-message").style.display = "block";
-        document.getElementById("send-message").addEventListener("submit", function() {
-            event.stopImmediatePropagation();
-            event.stopPropagation();
-            event.preventDefault();
-            socket.emit("send", {
-                content: this.elements.message.value,
-                groupID: group.id,
-                receiverID: group.receiver_id
-            });
-            this.target.value = "";
+        document.getElementById("send-message").scrollIntoView({
+            behavior: "smooth",
+            block: "end"
         });
-        socket.on(`message_sent/${userID}/${group.receiver_id}`, (message) => {
-            alert("Message sent");
-            bubble = `
-            <div class="message self-message">
-                <div class="message-content">${message.content}</div>
-            </div>
-            `;
-            document.getElementById("chatroom").insertAdjacentHTML("beforeend", bubble);
+        document.getElementById("send-message").addEventListener("submit", sendMessage);
+    });
+    socket.on(`message_sent/${globalGroupID}/${globalUserID}/${globalReceiverID}`, (message) => {
+        document.getElementById("chatroom").appendChild(createSelfBubble(message.content));
+        document.getElementById("send-message").scrollIntoView({
+            behavior: "smooth",
+            block: "end"
         });
-        socket.on(`receive_new/${group.receiver_id}/${userID}`, (message) => {
-            alert("Message received");
-            bubble = `
-            <div class="message others-message">
-                <div class="message-content">${message.content}</div>
-            </div>
-            `;
-            document.getElementById("chatroom").insertAdjacentHTML("beforeend", bubble);
+    });
+    socket.on(`receive_new/${globalGroupID}/${globalReceiverID}/${globalUserID}`, (message) => {
+        document.getElementById("chatroom").appendChild(createOthersBubble(message.content));
+        document.getElementById("send-message").scrollIntoView({
+            behavior: "smooth",
+            block: "end"
         });
     });
 };
 
 const loadChatroomAsMember = (groupID, creatorID, userID) => {
+    socket.off(`message_sent/${globalGroupID}/${globalUserID}/${globalReceiverID}`);
+    socket.off(`receive_new/${globalGroupID}/${globalReceiverID}/${globalUserID}`);
+    globalGroupID = groupID, globalUserID = userID, globalReceiverID = creatorID;
     socket.emit("load_chatroom/member", {
         groupID: groupID
     });
@@ -70,49 +110,31 @@ const loadChatroomAsMember = (groupID, creatorID, userID) => {
         let bubble;
         for (let message of group.messages) {
             if (message.self) {
-                bubble = `
-                <div class="message self-message">
-                    <div class="message-content">${message.content}</div>
-                </div>
-                `;
+                bubble = createSelfBubble(message.content);
             } else {
-                bubble = `
-                <div class="message others-message">
-                    <div class="message-content">${message.content}</div>
-                </div>
-                `;
+                bubble = createOthersBubble(message.content);
             }
-            document.getElementById("chatroom").insertAdjacentHTML("beforeend", bubble);
+            document.getElementById("chatroom").appendChild(bubble);
         }
         document.getElementById("send-message").style.display = "block";
-        document.getElementById("send-message").addEventListener("submit", function() {
-            event.stopImmediatePropagation();
-            event.stopPropagation();
-            event.preventDefault();
-            socket.emit("send", {
-                content: this.elements.message.value,
-                groupID: group.id,
-                receiverID: group.receiver_id
-            });
-            this.target.value = "";
+        document.getElementById("send-message").scrollIntoView({
+            behavior: "smooth",
+            block: "end"
         });
-        socket.on(`message_sent/${userID}/${group.receiver_id}`, (message) => {
-            alert("Message sent");
-            bubble = `
-            <div class="message self-message">
-                <div class="message-content">${message.content}</div>
-            </div>
-            `;
-            document.getElementById("chatroom").insertAdjacentHTML("beforeend", bubble);
+        document.getElementById("send-message").addEventListener("submit", sendMessage);
+    });
+    socket.on(`message_sent/${globalGroupID}/${globalUserID}/${globalReceiverID}`, (message) => {
+        document.getElementById("chatroom").appendChild(createSelfBubble(message.content));
+        document.getElementById("send-message").scrollIntoView({
+            behavior: "smooth",
+            block: "end"
         });
-        socket.on(`receive_new/${group.receiver_id}/${userID}`, (message) => {
-            alert("Message received");
-            bubble = `
-            <div class="message others-message">
-                <div class="message-content">${message.content}</div>
-            </div>
-            `;
-            document.getElementById("chatroom").insertAdjacentHTML("beforeend", bubble);
+    });
+    socket.on(`receive_new/${globalGroupID}/${globalReceiverID}/${globalUserID}`, (message) => {
+        document.getElementById("chatroom").appendChild(createOthersBubble(message.content));
+        document.getElementById("send-message").scrollIntoView({
+            behavior: "smooth",
+            block: "end"
         });
     });
 };

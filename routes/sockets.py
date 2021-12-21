@@ -169,9 +169,9 @@ def send(json):
     ).fetchone()
 
     if is_member:
-        email = is_member[0].user.email
+        sender_email = is_member[0].user.email
     elif is_creator:
-        email = is_creator[0].creator.email
+        sender_email = is_creator[0].creator.email
     else:
         # Sender doesn't belong in chatroom/chatroom doesn't exist
         socketio.emit("error", {
@@ -194,9 +194,13 @@ def send(json):
     ).fetchone()
 
     if is_member:
-        name = is_member[0].user.username
+        receiver_name = is_member[0].user.username
+        receiver_email = is_member[0].user.email
+        group_name = is_member[0].group.name
     elif is_creator:
-        name = is_creator[0].creator.username
+        receiver_name = is_creator[0].creator.username
+        receiver_name = is_creator[0].creator.email
+        group_name = is_creator[0].name
     else:
         # Receiver doesn't belong in chatroom
         socketio.emit("error", {
@@ -215,12 +219,28 @@ def send(json):
     db.session.commit()
 
     # Send message
+    def email():
+        mail = Mail()
+        msg = Email(
+            subject="OfficeHours - New message",
+            sender=current_app.config["MAIL_USERNAME"],
+            recipients=[receiver_email]
+        )
+        msg.html = render_template(
+            "message.html",
+            name=receiver_name,
+            email=receiver_email,
+            group_name=group_name,
+            message=content
+        )
+        mail.send(msg)
+    email()
 
-    socketio.emit(f"message_sent/{session['user_id']}/{receiver_id}", {
+    socketio.emit(f"message_sent/{group_id}/{session['user_id']}/{receiver_id}", {
         "content": content,
         "receiver_id": receiver_id
     })
-    socketio.emit(f"receive_new/{session['user_id']}/{receiver_id}", {
+    socketio.emit(f"receive_new/{group_id}/{session['user_id']}/{receiver_id}", {
         "content": content,
         "receiver_id": receiver_id
     })
