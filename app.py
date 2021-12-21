@@ -53,7 +53,7 @@ socketio.init_app(app)
 
 # Configure custom variables
 app.config["AVATAR_FOLDER"] = "static/images/avatars"
-app.config["DOMAIN_URL"] = "http://officehrs.herokuapp.com"
+app.config["DOMAIN_URL"] = "https://officehrs.herokuapp.com"
 app.config["GITHUB_LINK"] = "https://github.com/jianmin-chen/officehours"
 
 # Configure routes
