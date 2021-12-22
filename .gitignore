@@ -2,5 +2,4 @@
 /env/
 /flask_session/
 /routes/__pycache__/
-/static/images/avatars/
 database.db
