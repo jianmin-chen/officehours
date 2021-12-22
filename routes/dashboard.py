@@ -87,7 +87,7 @@ def invite():
     )
     mail.send(msg)
 
-    flash(f"We've sent an invite code to {email}. Once they sign up and join your group using the code, they'll show up in the group!")
+    flash(f"We've sent an invite code to {email}. Once they sign up and join your group using the code, they'll show up in the group! Just make sure to refresh your page.")
     return redirect("/")
 
 
